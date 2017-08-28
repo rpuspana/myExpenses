@@ -24,19 +24,24 @@ var uiController = (function() {
 // App controller for communicating between the budgetController and the UIconroller
 var controller = (function(budgetCtrl, UIctrl) {
 
-    document.querySelector(".add__btn").addEventListener("click", function() {
-        console.log("button with .add__btn was clicked");
-
+    var ctrlAddItem = function() {
         // get the field input data(expense or income)
         // add the item to the budget controller
         // add the new item to the UI
         // update the budget taking into account the expense/budget just entered
         // display the newly calculated budget on the UI
-    }, false);
+        console.log("You pressed enter and an item will be added to one of the tables and the budget will be updated")
+    }
 
-    // click event happens on the page, not on a specific elem. Used only for the ENTER key
+    // register click event for the button with the tick sign
+    document.querySelector(".add__btn").addEventListener("click", ctrlAddItem, false);
+
+    // register Enter keypress event for the global object. Used only for the ENTER key
     document.addEventListener("keypress", function(event) {
 
+        // use event.which to assure comptatibility with IE 9..11, Edge 14, UC Browser for Android 11.4
+        // code 13 is returned when the "ENTER" key is pressed
+        if (event.key === "Enter" || event.which === 13) { ctrlAddItem(); }
     }, false);
 
 })(budgetController, uiController);
