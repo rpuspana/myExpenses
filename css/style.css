@@ -77,29 +77,29 @@ body {
 
 .budget__income {
     margin-bottom: 10px;
-    background-color: #28B9B5;
+    background-color: #2cab32;
 }
 
 .budget__expenses {
     background-color: #FF5049;
 }
 
-.budget__income--text,
-.budget__expenses--text {
+.budget__income__text,
+.budget__expenses__text {
     float: left;
     font-size: 13px;
-    color: #444;
+    color: #FFF;
     margin-top: 2px;
 }
 
-.budget__income--value,
-.budget__expenses--value {
+.budget__income__value,
+.budget__expenses__value {
     letter-spacing: 1px;
     float: left;
 }
 
-.budget__income--percentage,
-.budget__expenses--percentage {
+.budget__income__percentage,
+.budget__expenses__percentage {
     float: left;
     width: 34px;
     font-size: 11px;
@@ -107,7 +107,7 @@ body {
     margin-left: 10px;
 }
 
-.budget__expenses--percentage {
+.budget__expenses__percentage {
     background-color: rgba(255, 255, 255, 0.2);
     text-align: center;
     border-radius: 3px;
@@ -162,7 +162,7 @@ body {
     font-size: 35px;
     background: none;
     border: none;
-    color: #28B9B5;
+    color: #8e8d8d;
     cursor: pointer;
     display: inline-block;
     vertical-align: middle;
@@ -205,8 +205,13 @@ h2 {
     margin-bottom: 15px;
 }
 
-.icome__title { color: #28B9B5; }
-.expenses__title { color: #FF5049; }
+.income__expense__title__common__style {
+    font-weight: 600;
+    text-align: center;
+}
+
+.icome__title { color: #017906; }
+.expenses__title { color: #FF5049;}
 
 .item {
     padding: 13px;
@@ -238,7 +243,7 @@ h2 {
 }
 
 .income .item__value,
-.income .item__delete--btn {
+.income .item__delete__btn {
     color: #28B9B5;
 }
 
@@ -253,7 +258,7 @@ h2 {
     float: left;
 }
 
-.item__delete--btn {
+.item__delete__btn {
     font-size: 22px;
     background: none;
     border: none;
@@ -264,10 +269,10 @@ h2 {
     display: none;
 }
 
-.item__delete--btn:focus { outline: none; }
-.item__delete--btn:active { transform: translateY(2px); }
+.item__delete__btn:focus { outline: none; }
+.item__delete__btn:active { transform: translateY(2px); }
 
-.item:hover .item__delete--btn { display: block; }
+.item:hover .item__delete__btn { display: block; }
 .item:hover .item__value { transform: translateX(-20px); }
 .item:hover .item__percentage { transform: translateX(-20px); }
 
