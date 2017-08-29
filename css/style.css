@@ -156,7 +156,7 @@ body {
 }
 
 .add__description { width: 400px;}
-.add__value { width: 150px;}
+.add__value { width: 200px;}
 
 .add__btn {
     font-size: 35px;
@@ -184,7 +184,7 @@ body {
 /***** LISTS *****/
 .container {
     width: 1000px;
-    margin: 60px auto;
+    margin: 20px auto;
 }
 
 .income {
