@@ -16,6 +16,13 @@ var budgetController = (function() {
 // UI module manipulates the UI of the app
 var uiController = (function() {
 
+    // private object containing the class names used in index.html and style.css
+    var prvDOMstrings = {
+        inputType: ".add__type",
+        inputDescription: ".add__description",
+        inputValue: ".add__value",
+        inputButton: ".add__btn"};
+
     return {
         // public method to retrieve and return all three field values as strings from the UI
         pblGetInput: function() {
@@ -23,14 +30,19 @@ var uiController = (function() {
             // return an object with all three fields values as strings from the UI
             return {
                 // return "inc" or "exp" from the transaction type list
-                type: document.querySelector(".add__type").value,
+                type: document.querySelector(prvDOMstrings.inputType).value,
 
                 // return the transaction description as string
-                description: document.querySelector(".add__description").value,
+                description: document.querySelector(prvDOMstrings.inputDescription).value,
 
                 // return the transaction value as a string
-                value: document.querySelector(".add__value").value
+                value: document.querySelector(prvDOMstrings.inputValue).value
             };
+        },
+
+        // public method for returning the object containing the class names in the index.html and style.css
+        pblGetDOMstrings: function() {
+            return prvDOMstrings;
         }
     }
 
@@ -55,8 +67,11 @@ var controller = (function(budgetCtrl, UIctrl) {
         console.log("You pressed enter and an item will be added to one of the tables and the budget will be updated")
     }
 
+    // private object containing the class names in the index.html and style.css
+    var prvDOMstrings = uiController.pblGetDOMstrings();
+
     // register click event for the button with the tick sign
-    document.querySelector(".add__btn").addEventListener("click", prvCtrlAddItem, false);
+    document.querySelector(prvDOMstrings.inputButton).addEventListener("click", prvCtrlAddItem, false);
 
     // register Enter keypress event for the global object. Used only for the ENTER key
     document.getElementById("enterSum").addEventListener("keypress", function(event) {
