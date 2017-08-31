@@ -8,7 +8,12 @@
 // IFEE creates a new scope. IFEE creates a closure for the vars/functions/objects
 var budgetController = (function() {
 
-    // some code
+    // private Expense constructor
+    var prvExpense = function(id, description, value) {
+       this.id = id;
+       this.description = description;
+       this.value = value;
+    };
 
 })();
 
