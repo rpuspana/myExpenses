@@ -52,7 +52,26 @@ var uiController = (function() {
 // App controller for communicating between the budgetController and the UIconroller
 var controller = (function(budgetCtrl, UIctrl) {
 
-    // private method for :
+    // private function to place the event listeners and the HTML tags' classes
+    var prvSetupEventListeners = function() {
+
+        // object containing the class names in the index.html and style.css
+        var DOMstrings = uiController.pblGetDOMstrings();
+
+        // register click event for the button with the tick sign
+        document.querySelector(DOMstrings.inputButton).addEventListener("click", prvCtrlAddItem, false);
+
+        // register Enter keypress event for the global object. Used only for the ENTER key
+        document.getElementById("enterSum").addEventListener("keypress", function(event) {
+
+            // use event.which to assure comptatibility with IE 9..11, Edge 14, UC Browser for Android 11.4
+            // code 13 is returned when the "ENTER" key is pressed
+            if (event.key === "Enter" || event.which === 13) { prvCtrlAddItem(); }
+
+        }, false);
+    };
+
+    // private function for :
     // - retrieving all three user input field values
     var prvCtrlAddItem = function() {
 
@@ -65,20 +84,16 @@ var controller = (function(budgetCtrl, UIctrl) {
         // update the budget taking into account the expense/budget just entered
         // display the newly calculated budget on the UI
         console.log("You pressed enter and an item will be added to one of the tables and the budget will be updated")
+    };
+
+    return {
+        initialiseVarsAndEvents: function() {
+            console.log("App has started.");
+            prvSetupEventListeners();
+        }
     }
 
-    // private object containing the class names in the index.html and style.css
-    var prvDOMstrings = uiController.pblGetDOMstrings();
-
-    // register click event for the button with the tick sign
-    document.querySelector(prvDOMstrings.inputButton).addEventListener("click", prvCtrlAddItem, false);
-
-    // register Enter keypress event for the global object. Used only for the ENTER key
-    document.getElementById("enterSum").addEventListener("keypress", function(event) {
-
-        // use event.which to assure comptatibility with IE 9..11, Edge 14, UC Browser for Android 11.4
-        // code 13 is returned when the "ENTER" key is pressed
-        if (event.key === "Enter" || event.which === 13) { prvCtrlAddItem(); }
-    }, false);
-
 })(budgetController, uiController);
+
+// Global execution scope
+controller.initialiseVarsAndEvents();
