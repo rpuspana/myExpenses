@@ -5,7 +5,8 @@
  */
 
 // module that handles the budget data using the module pattern
-// IFEE creates a new scope. IFEE creates a closure for the vars/functions/objects
+// this controller keeps track of all the income, expenses, the budget itself, and
+// also the percentage of how much an income/expense represents of the total budget
 var budgetController = (function() {
 
     // private Expense constructor
@@ -21,6 +22,21 @@ var budgetController = (function() {
         this.description = description;
         this.value = value;
     };
+
+    // object for storing instances of prvExpense, prvIncome, totalExpenses, totalIncomes
+    // every expense entered in the UI will map to an instance of prvExpense
+    // every income entered in the UI will map to an instance of prvIncome
+    var prvData = {
+        allItems: {
+            expenses: [],
+            incomes: []
+        },
+        totals: {
+            totalExpenses: 0,
+            totalIncomes: 0
+        }
+    };
+
 
 })();
 
