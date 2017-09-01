@@ -64,6 +64,10 @@ var budgetController = (function() {
 
             // return new instance of prvExpense or prvIncome
             return newItem;
+        },
+
+        pblTestGetDataStr: function() {
+            console.info("prvData.allItems = %O", prvData.allItems);
         }
     }
 
@@ -132,20 +136,25 @@ var controller = (function(budgetCtrl, UIctrl) {
     // private function for :
     // - retrieving all three user input field values
     var prvCtrlAddItem = function() {
+        var userInput, newTransaction;
 
-        // get the field input data(expense or income)
-        var userInput = uiController.pblGetInput();
+        console.log("You pressed enter and an item will be added to one of the tables and the budget will be updated");
+
+        // get the user input data from the UI. This input will be called a transcation
+        userInput = uiController.pblGetInput();
         console.log(userInput);
 
-        // add the item to the budget controller
+        // add the transaction to the budget controller
+        newTransaction = budgetController.pblAddItem(userInput.type, userInput.description, userInput.value);
+        console.info(newTransaction);
 
-        // add the new item to the UI
+        // add the transaction to the UI
 
-        // update the budget taking into account the expense/budget just entered
+        // update the budget taking into account the transaction
 
         // display the newly calculated budget on the UI
 
-        console.log("You pressed enter and an item will be added to one of the tables and the budget will be updated")
+
     };
 
     return {
