@@ -46,9 +46,10 @@ var budgetController = (function() {
             // new reference to a new intance of prvExpense or prvIncome
             var newItem;
 
-            // create unique id to put in each prvExpense or prvIncome item
-            // id = last element of prvData.allItems[type] + 1
-            var id = prvData.allItems[type][prvData.allItems[type].length - 1].id + 1;
+             // create a unique id to put in each prvExpense or prvIncome item
+            var id;
+
+            id = prvData.allItems[type].length > 0 ? prvData.allItems[type][prvData.allItems[type].length - 1].id + 1 : 0;
 
             // create new instance of prvExpense or prvIncome based on the type parameter
             if(type === "exp") {
@@ -60,7 +61,7 @@ var budgetController = (function() {
             // object[property]
             // add expense/income to the prvData.allItems[exp] or prvData.allItems[inc] array
             // based on the type parameter
-            data.allItems[type].push(newItem);
+            prvData.allItems[type].push(newItem);
 
             // return new instance of prvExpense or prvIncome
             return newItem;
@@ -142,11 +143,14 @@ var controller = (function(budgetCtrl, UIctrl) {
 
         // get the user input data from the UI. This input will be called a transcation
         userInput = uiController.pblGetInput();
-        console.log(userInput);
+        console.log("userInput = %O", userInput);
 
         // add the transaction to the budget controller
         newTransaction = budgetController.pblAddItem(userInput.type, userInput.description, userInput.value);
-        console.info(newTransaction);
+        console.info("newTransaction = %O", newTransaction);
+
+        // TO BE REMOVED. Inspect the prvData structure
+        budgetController.pblTestGetDataStr();
 
         // add the transaction to the UI
 
