@@ -42,9 +42,15 @@ var budgetController = (function() {
         // pubic method for creating a new Expense or Income instance based on user input from the UI,
         // add it to the exp or inc array of prvData.allItems, and return the new instance created
         pblAddItem: function(type, descripton, value) {
-            var newItem;
-            var id = 0;
 
+            // new reference to a new intance of prvExpense or prvIncome
+            var newItem;
+
+            // create unique id to put in each prvExpense or prvIncome item
+            // id = last element of prvData.allItems[type] + 1
+            var id = prvData.allItems[type][prvData.allItems[type].length - 1].id + 1;
+
+            // create new instance of prvExpense or prvIncome based on the type parameter
             if(type === "exp") {
                 newItem = new prvExpense(id, descripton, value);
             } else if (type === "inc") {
@@ -52,9 +58,11 @@ var budgetController = (function() {
             }
 
             // object[property]
-            // add expense/income to the exp or inc array
+            // add expense/income to the prvData.allItems[exp] or prvData.allItems[inc] array
+            // based on the type parameter
             data.allItems[type].push(newItem);
 
+            // return new instance of prvExpense or prvIncome
             return newItem;
         }
     }
