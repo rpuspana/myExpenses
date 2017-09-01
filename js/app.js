@@ -28,8 +28,8 @@ var budgetController = (function() {
     // every income entered in the UI will map to an instance of prvIncome
     var prvData = {
         allItems: {
-            expenses: [],
-            incomes: []
+            exp: [],
+            inc: []
         },
         totals: {
             totalExpenses: 0,
@@ -37,6 +37,27 @@ var budgetController = (function() {
         }
     };
 
+    return {
+
+        // pubic method for creating a new Expense or Income instance based on user input from the UI,
+        // add it to the exp or inc array of prvData.allItems, and return the new instance created
+        pblAddItem: function(type, descripton, value) {
+            var newItem;
+            var id = 0;
+
+            if(type === "exp") {
+                newItem = new prvExpense(id, descripton, value);
+            } else if (type === "inc") {
+                newItem = new prvIncome(id, descripton, value);
+            }
+
+            // object[property]
+            // add expense/income to the exp or inc array
+            data.allItems[type].push(newItem);
+
+            return newItem;
+        }
+    }
 
 })();
 
@@ -68,7 +89,8 @@ var uiController = (function() {
             };
         },
 
-        // public method for returning the object containing the class names in the index.html and style.css
+        // public method for returning the object containing the class names
+        // in the index.html and style.css
         pblGetDOMstrings: function() {
             return prvDOMstrings;
         }
@@ -108,9 +130,13 @@ var controller = (function(budgetCtrl, UIctrl) {
         console.log(userInput);
 
         // add the item to the budget controller
+
         // add the new item to the UI
+
         // update the budget taking into account the expense/budget just entered
+
         // display the newly calculated budget on the UI
+
         console.log("You pressed enter and an item will be added to one of the tables and the budget will be updated")
     };
 
