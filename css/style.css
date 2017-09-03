@@ -242,14 +242,17 @@ h2 {
     text-align: center;
 }
 
-.income .item__value,
-.income .item__delete__btn {
-    color: #28B9B5;
+.income .item__value {
+    color: #017906;
+}
+
+.income .item__delete__btn,
+.expenses .item__delete__btn {
+    color: #FF5049;
 }
 
 .expenses .item__value,
-.expenses .item__percentage,
-.expenses .item__delete--btn {
+.expenses .item__percentage {
     color: #FF5049;
 }
 
@@ -272,8 +275,8 @@ h2 {
 .item__delete__btn:focus { outline: none; }
 .item__delete__btn:active { transform: translateY(2px); }
 
-.item:hover .item__delete__btn { display: block; }
-.item:hover .item__value { transform: translateX(-20px); }
+.item:hover .item__delete__btn { display: block;}
+.item:hover .item__value { transform: translateX(-20px); color: #fc2f27;}
 .item:hover .item__percentage { transform: translateX(-20px); }
 
 
