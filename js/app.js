@@ -151,6 +151,30 @@ var uiController = (function() {
         // in the index.html and style.css
         pblGetDOMstrings: function() {
             return prvDOMstrings;
+        },
+
+        // clear the the transaction's details from the transaction form on the UI (after the user submited the transaction)
+        pblClearTransFormFields: function() {
+            // NodeList instance that includes the transaction's description and value UI fields
+            var transFormDescAndValueFieldsNl;
+
+            // Array instance of the transaction's description and value fields from the UI
+            var transFormDescAndValueFieldsArray;
+
+            // get the trasaction's description and value from the UI's input form
+            transFormDescAndValueFieldsNl = document.querySelectorAll(prvDOMstrings.inputDescription + "," + prvDOMstrings.inputValue);
+
+            // transform the descAndValueNodeList NodeList into an array
+            transFormDescAndValueFieldsArray = Array.prototype.slice.call(transFormDescAndValueFieldsNl);
+
+            // call the annonymous function on each element of the transFormDescAndValueFieldsArray array.
+            // result : in the UI, clear the transaction's description and value in the transaction input form
+            transFormDescAndValueFieldsArray.forEach(function(currentElem, currentElemIndex, array) {
+                currentElem.value = "";
+            });
+
+            // put the focus back on the transaction description field on the transaction input form
+            transFormDescAndValueFieldsArray[0].focus();
         }
     }
 
@@ -224,6 +248,9 @@ var controller = (function(budgetCtrl, UIctrl) {
 
         // add the transaction to the UI in the Income or Expense comumn depending on the transaction's type
         uiController.pblAddListItem(newTransaction, userInput.type, localTimeAndDate);
+
+        // after transaction submit, clear the transaction's details from the transaction input form
+        uiController.pblClearTransFormFields();
 
         // update the budget taking into account the transaction
 
