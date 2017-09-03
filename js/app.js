@@ -83,7 +83,10 @@ var uiController = (function() {
         inputType: ".add__type",
         inputDescription: ".add__description",
         inputValue: ".add__value",
-        inputButton: ".add__btn"};
+        inputButton: ".add__btn",
+        incomeContainer: ".income__list",
+        expenseContainer: ".expenses__list"
+    };
 
     return {
         // public method to retrieve and return all three field values as strings from the UI
@@ -100,6 +103,48 @@ var uiController = (function() {
                 // return the transaction value as a string
                 value: document.querySelector(prvDOMstrings.inputValue).value
             };
+        },
+
+        // public method for listing a transaction entered by the user as input, under the Expense or Income column
+        // transcation  Expense/Income instance  trasaction entered by the user
+        // type  String  type of transaction: income/expense
+        pblAddListItem: function(transcation, type, utcTimeAndDate) {
+
+            // html code of a transaction list item to be added with dummy code for the transaction's HTML id, description and value
+            var transactionListItem;
+
+            // html code of a transaction list item to be added with value from the transaction parameter for the item's HTML id, description and value
+            var newTransactionListItem;
+
+            // HTML class of the father element of the income or expense list
+            var transListRootElemClass;
+
+            // if the type of transaction is an income
+            if (type === "inc") {
+                // transaction list item HTML code with dummy values for:
+                // - transaction's HTML id (income-%id%),
+                // - the transaction description (%description%),
+                // - transaction's value(%value%)
+                transactionListItem = '<div class="item clearfix" id="income-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete__btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
+
+                transListRootElemClass = prvDOMstrings.incomeContainer;
+            }
+            // if the type of transaction is an expense
+            else if (type === "exp") {
+
+                transactionListItem = '<div class="item clearfix" id="expense-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete__btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
+
+                transListRootElemClass = prvDOMstrings.expenseContainer;
+            }
+
+            // replace the dummy text in transactionListItem with actual data from the transaction object
+            newTransactionListItem = transactionListItem.replace("%id%", transcation.id);
+            newTransactionListItem = newTransactionListItem.replace("%description%", utcTimeAndDate + transcation.description);
+            newTransactionListItem = newTransactionListItem.replace("%value%", transcation.value);
+
+            // select the transacton column father HTML element and insert the new transaction as it's first child
+            // Note - the newest transaction will be placed at the end of the income or expense column
+            document.querySelector(transListRootElemClass).insertAdjacentHTML("beforeend", newTransactionListItem);
         },
 
         // public method for returning the object containing the class names
@@ -134,10 +179,33 @@ var controller = (function(budgetCtrl, UIctrl) {
         }, false);
     };
 
-    // private function for :
-    // - retrieving all three user input field values
+    // get tine and date of the local time to record the creation of a transaction
+    // return dateAndTime String time and date formated as YYYY-MM-DD HH:MM:SS local time
+    // return String HH:MM  DD-MM-YYYY local time
+    var prvGetLocalTimeAndDate = function() {
+        var date = new Date;
+
+        var hour = date.getHours();
+        var minutes = date.getMinutes();
+        if (minutes < 10) {
+            minutes = '0' + minutes;
+        }
+        var seconds = date.getSeconds();
+
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+
+        var dateAndTime = "" + hour + ":" + minutes + ":" + seconds +
+                          "  "  + day + "-" + month + "-" + year + "  ";
+
+        return dateAndTime;
+    }
+
+    // private function for receiving the user input from the UI,
+    // entering the new transaction under the income or expense column on the UI, adjusting the budget according to the user's transaction
     var prvCtrlAddItem = function() {
-        var userInput, newTransaction;
+        var userInput, newTransaction, localTimeAndDate;
 
         console.log("You pressed enter and an item will be added to one of the tables and the budget will be updated");
 
@@ -152,12 +220,14 @@ var controller = (function(budgetCtrl, UIctrl) {
         // TO BE REMOVED. Inspect the prvData structure
         budgetController.pblTestGetDataStr();
 
-        // add the transaction to the UI
+        localTimeAndDate = prvGetLocalTimeAndDate();
+
+        // add the transaction to the UI in the Income or Expense comumn depending on the transaction's type
+        uiController.pblAddListItem(newTransaction, userInput.type, localTimeAndDate);
 
         // update the budget taking into account the transaction
 
         // display the newly calculated budget on the UI
-
 
     };
 
