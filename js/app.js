@@ -226,6 +226,17 @@ var controller = (function(budgetCtrl, UIctrl) {
         return dateAndTime;
     }
 
+    // calculate the budget based on the last submited or selected transaction and display it on the UI
+    var prvUpdateBudget = function() {
+
+        // calculate the budget taking into account the submited transaction
+
+        // return the new budget
+
+        // display the newly calculated budget on the UI
+
+    };
+
     // private function for receiving the user input from the UI,
     // entering the new transaction under the income or expense column on the UI, adjusting the budget according to the user's transaction
     var prvCtrlAddItem = function() {
@@ -252,9 +263,8 @@ var controller = (function(budgetCtrl, UIctrl) {
         // after transaction submit, clear the transaction's details from the transaction input form
         uiController.pblClearTransFormFields();
 
-        // update the budget taking into account the transaction
-
-        // display the newly calculated budget on the UI
+        // calculate the budget and displai it on the UI
+        prvUpdateBudget();
 
     };
 
