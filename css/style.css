@@ -183,19 +183,19 @@ body {
 
 /***** LISTS *****/
 .container {
-    width: 1000px;
+    width: 1200px;
     margin: 20px auto;
 }
 
 .income {
     float: left;
-    width: 475px;
+    width: 575px;
     margin-right: 50px;
 }
 
 .expenses {
     float: left;
-    width: 475px;
+    width: 575px;
 }
 
 h2 {
