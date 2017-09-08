@@ -1,0 +1,14 @@
+# valid user input
+-----------------------
+transaction description with at least 3 chacarters and a transaction value of at least 1 digit, exluding 0
+
+
+# invalid user input:
+------------------------
+* no description and no transaction value
+* no description and no transaction value
+* description and no transaction value
+* description and transaction value 0 or 00, or 00..00
+* description and transaction value starting with a letter.
+  if ending with a letter, only the numbers until the letter will be entered
+  
