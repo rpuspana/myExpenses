@@ -297,9 +297,8 @@ var controller = (function(budgetCtrl, UIctrl) {
         userInput = uiController.pblGetInput();
         console.log("userInput = %O", userInput);
 
-        // if the user entered at least one charcter (whitespace in an invalid input) in the description
-        // and a number in the value field
-        if (userInput.description.trim().length > 0 && !isNaN(userInput.value) && userInput.value > 0) {
+        // input form validation for the description and value fields
+        if (userInput.description.trim().length > 2 && !isNaN(userInput.value) && userInput.value > 0) {
 
             // add the transaction to the budget controller
             newTransaction = budgetController.pblAddItem(userInput.type, userInput.description, userInput.value);
@@ -322,10 +321,10 @@ var controller = (function(budgetCtrl, UIctrl) {
         else {
 
              // HTML to replace the content(if any) of the alertBox_text div
-            var modalWindowInnerHTML = "<p>Please enter a short description and a valid sum of money greater than 0 before submiting the transaction.</p>";
+            var modalWindowInnerHTML = "<p>The description should have at least three characters. The value should have at least one digit, excluding  0, before submiting the transaction.</p>";
 
             // display custom modal window with this text, type and width
-            uiController.pblDisplayPopup(modalWindowInnerHTML, "err", "20%");
+            uiController.pblDisplayPopup(modalWindowInnerHTML, "err", "22%");
 
             // make the modal window visible
             document.getElementById("alertBox_container").style.visibility = "visible";
