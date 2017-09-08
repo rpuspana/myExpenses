@@ -100,8 +100,8 @@ var uiController = (function() {
                 // return the transaction description as string
                 description: document.querySelector(prvDOMstrings.inputDescription).value,
 
-                // return the transaction value as a string
-                value: document.querySelector(prvDOMstrings.inputValue).value
+                // return the transaction value as a floating point number
+                value: parseFloat(document.querySelector(prvDOMstrings.inputValue).value)
             };
         },
 
@@ -175,6 +175,54 @@ var uiController = (function() {
 
             // put the focus back on the transaction description field on the transaction input form
             transFormDescAndValueFieldsArray[0].focus();
+        },
+
+        // create and display a custom popup window
+        // text    String  body text to be displayed in the popup
+        // type    String  type of popup to be displayed
+        // height  String  height of the modal window
+        pblDisplayPopup: function(text, type, height) {
+
+            var field = '<div><input id="ptext" class="field" type="text"></div>';
+            var button, popupColor;
+
+            if (type === "err") {
+                button = '<div id="alertBox_button_div"><input id="err_alert_box_button" class="button" type="button" value="OK" alt="OK"></div>';
+                document.getElementById('alertBox_text').innerHTML = text + button;
+                popupColor = "#D32C34";
+                elemId = "err_alert_box_button";
+            }
+            else if (type === "info") {
+                // HTML of the button on the modal window
+                button = '<div id="alertBox_button_div"><input id="ok_alert_box_button" class="button" type="button" value="OK" alt="OK"></div>';
+
+                // insert the message and the OK button on the modal window
+                document.getElementById('alertBox_text').innerHTML = text + button;
+
+                // set the background color of the modal window
+                popupColor = "green";
+
+                elemId = "ok_alert_box_button";
+
+            }
+            else if (type === "prompt") {
+                button = '<div id="alertBox_button_div"><input id="alert_box_OK_button" class="button" type="button" value="OK" alt="OK"></div>';
+                document.getElementById('alertBox_text').innerHTML = text + field + button;
+                popupColor = "green";
+            }
+            else {
+                document.getElementById('alertBox_text').innerHTML = text;
+                popupColor = "#D32C34";
+            }
+
+            if (height !== undefined) {document.getElementById('alertBox').style.height = height;}
+            document.getElementById('alertBox_container').style.backgroundColor = popupColor;
+            document.getElementById('alertBox_container').style.visibility = "visible";
+
+            // hide the custom popup when it's X button is clicked
+            document.getElementById(elemId).addEventListener("click", function () {
+                    document.getElementById("alertBox_container").style.visibility = "hidden";
+            });
         }
     }
 
@@ -191,14 +239,14 @@ var controller = (function(budgetCtrl, UIctrl) {
         var DOMstrings = uiController.pblGetDOMstrings();
 
         // register click event for the button with the tick sign
-        document.querySelector(DOMstrings.inputButton).addEventListener("click", prvCtrlAddItem, false);
+        document.querySelector(DOMstrings.inputButton).addEventListener("click", prvAddItem, false);
 
         // register Enter keypress event for the global object. Used only for the ENTER key
         document.getElementById("enterSum").addEventListener("keypress", function(event) {
 
             // use event.which to assure comptatibility with IE 9..11, Edge 14, UC Browser for Android 11.4
             // code 13 is returned when the "ENTER" key is pressed
-            if (event.key === "Enter" || event.which === 13) { prvCtrlAddItem(); }
+            if (event.key === "Enter" || event.which === 13) { prvAddItem(); }
 
         }, false);
     };
@@ -238,8 +286,9 @@ var controller = (function(budgetCtrl, UIctrl) {
     };
 
     // private function for receiving the user input from the UI,
-    // entering the new transaction under the income or expense column on the UI, adjusting the budget according to the user's transaction
-    var prvCtrlAddItem = function() {
+    // entering the new transaction under the income or expense column on the UI, a
+    // djusting the budget according to the user's transaction
+    var prvAddItem = function() {
         var userInput, newTransaction, localTimeAndDate;
 
         console.log("You pressed enter and an item will be added to one of the tables and the budget will be updated");
@@ -248,24 +297,39 @@ var controller = (function(budgetCtrl, UIctrl) {
         userInput = uiController.pblGetInput();
         console.log("userInput = %O", userInput);
 
-        // add the transaction to the budget controller
-        newTransaction = budgetController.pblAddItem(userInput.type, userInput.description, userInput.value);
-        console.info("newTransaction = %O", newTransaction);
+        // if the user entered at least one charcter (whitespace in an invalid input) in the description
+        // and a number in the value field
+        if (userInput.description.trim().length > 0 && !isNaN(userInput.value) && userInput.value > 0) {
 
-        // TO BE REMOVED. Inspect the prvData structure
-        budgetController.pblTestGetDataStr();
+            // add the transaction to the budget controller
+            newTransaction = budgetController.pblAddItem(userInput.type, userInput.description, userInput.value);
+            console.info("newTransaction = %O", newTransaction);
 
-        localTimeAndDate = prvGetLocalTimeAndDate();
+            // TO BE REMOVED. Inspect the prvData structure
+            budgetController.pblTestGetDataStr();
 
-        // add the transaction to the UI in the Income or Expense comumn depending on the transaction's type
-        uiController.pblAddListItem(newTransaction, userInput.type, localTimeAndDate);
+            localTimeAndDate = prvGetLocalTimeAndDate();
 
-        // after transaction submit, clear the transaction's details from the transaction input form
-        uiController.pblClearTransFormFields();
+            // add the transaction to the UI in the Income or Expense comumn depending on the transaction's type
+            uiController.pblAddListItem(newTransaction, userInput.type, localTimeAndDate);
 
-        // calculate the budget and displai it on the UI
-        prvUpdateBudget();
+            // after transaction submit, clear the transaction's details from the transaction input form
+            uiController.pblClearTransFormFields();
 
+            // calculate the budget and displai it on the UI
+            prvUpdateBudget();
+        }
+        else {
+
+             // HTML to replace the content(if any) of the alertBox_text div
+            var modalWindowInnerHTML = "<p>Please enter a short description and a valid sum of money greater than 0 before submiting the transaction.</p>";
+
+            // display custom modal window with this text, type and width
+            uiController.pblDisplayPopup(modalWindowInnerHTML, "err", "20%");
+
+            // make the modal window visible
+            document.getElementById("alertBox_container").style.visibility = "visible";
+        }
     };
 
     return {
@@ -276,6 +340,13 @@ var controller = (function(budgetCtrl, UIctrl) {
     }
 
 })(budgetController, uiController);
+
+// register click event for the modal window's X button
+document.getElementById("alertBox_close").addEventListener("click", function () {
+
+    // hide the modal window when it's X button is clicked
+    document.getElementById("alertBox_container").style.visibility = "hidden";
+});
 
 // Global execution scope
 controller.initialiseVarsAndEvents();
