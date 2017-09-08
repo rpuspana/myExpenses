@@ -27,17 +27,32 @@ var budgetController = (function() {
     // every expense entered in the UI will map to an instance of prvExpense
     // every income entered in the UI will map to an instance of prvIncome
     var prvData = {
+        // object with all the expenses and all of the incomes
         allItems: {
+            // all expense transactions
             exp: [],
+
+            // all income transactions
             inc: []
         },
+        // object with expenses total and income total
         totals: {
+            // sum of all expense transactions
             exp: 0,
+
+            // sum of all income transactions
             inc: 0
-        }
+        },
+        // total budget: incomes - expenses
+        budget: 0,
+
+        // how much of the budget, in %, the expenses represent
+        // -1 = there is no budget, no total expenses and no total incomes
+        expensesPercentage: -1
     };
 
     // calculate total income or total expenses
+    // type  String  type of transaction "exp" or "inc"
     var prvCalculateTotal = function(type) {
         var sum = 0;
 
@@ -85,16 +100,23 @@ var budgetController = (function() {
             console.info("prvData.allItems = %O", prvData.allItems);
         },
 
-        // calculate the total income and total expenses
+        // calculate the budget after submiting a transaction
         // calculate the % shown in the expenses red row under the available budget. aka the percentage of the budget that we already spent
         pblCalculateBudget: function() {
 
-            // calculate total income and expenses
+            // calculate total income
+            prvCalculateTotal("inc");
+
+            // calculate total expenses
+            prvCalculateTotal("exp");
 
             // calculate the budget: income - expenses
+            prvData.budget = prvData.totals.inc - prvData.totals.exp;
+            console.log("budget = %d", prvData.budget);
 
-            // calculate the % of income that we spent
-
+            // calculate the % of income that we spent and round the result
+            prvData.expensesPercentage = Math.round((prvData.totals.exp * 100) / prvData.budget);
+            console.log("% the expenses represent = %d\%", prvData.expensesPercentage);
         },
     }
 
@@ -304,6 +326,7 @@ var controller = (function(budgetCtrl, UIctrl) {
     var prvUpdateBudget = function() {
 
         // calculate the budget taking into account the submited transaction
+        budgetCtrl.pblCalculateBudget();
 
         // return the new budget
 
