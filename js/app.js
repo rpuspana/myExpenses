@@ -32,10 +32,23 @@ var budgetController = (function() {
             inc: []
         },
         totals: {
-            totalExpenses: 0,
-            totalIncomes: 0
+            exp: 0,
+            inc: 0
         }
     };
+
+    // calculate total income or total expenses
+    var prvCalculateTotal = function(type) {
+        var sum = 0;
+
+        // select between the exp or inc array of the prvDate object to calculate the sum of all the values of each object in the array
+        prvData.allItems[type].forEach(function(currElem) {
+            sum = sum + currElem.value;
+        });
+
+        // add this sum to the prvData.totals[exp] or prvData.totals[inc]
+        prvData.totals[type] = sum;
+    }
 
     return {
 
@@ -67,9 +80,22 @@ var budgetController = (function() {
             return newItem;
         },
 
+        // to delete
         pblTestGetDataStr: function() {
             console.info("prvData.allItems = %O", prvData.allItems);
-        }
+        },
+
+        // calculate the total income and total expenses
+        // calculate the % shown in the expenses red row under the available budget. aka the percentage of the budget that we already spent
+        pblCalculateBudget: function() {
+
+            // calculate total income and expenses
+
+            // calculate the budget: income - expenses
+
+            // calculate the % of income that we spent
+
+        },
     }
 
 })();
