@@ -290,3 +290,108 @@ h2 {
 .unpaid .item__percentage { box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.1); }
 .unpaid:hover .item__description { font-weight: 900; }
 
+/* Popup window */
+
+#alertBox {
+    position: absolute;
+    height: 82%;
+    width: 25%;
+    top: 50%;
+    margin-left: 25%;
+    font-size: 10pt;
+    visibility: hidden;
+}
+
+#alertBox_container {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    position: relative;
+    color: #FAFAFA;
+    border: 1px solid #FAFAFA;
+
+    border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
+
+    -webkit-box-shadow: 0px 10px 5px -1px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 10px 5px -1px rgba(0,0,0,0.75);
+    box-shadow: 0px 10px 5px -1px rgba(0,0,0,0.75);
+
+}
+
+#alertBox_titlebar {
+    cursor: pointer;
+    width: 100%;
+    margin-top: 0.5%;
+}
+
+#alertBox_titlebar span {
+    position: relative;
+    float: left;
+    padding-left: 1%;
+}
+
+#alertBox_close {
+    position: relative;
+    float: right;
+
+    padding: 0.5% 2%;
+    margin-right: 1%;
+
+    font-size: 7pt;
+    font-family: 'Montserrat';
+    font-weight: bold;
+
+    color: #000;
+    border: 1px solid;
+    border-color: #FAFAFA;
+    background-color: #FAFAFA;
+
+     border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
+}
+
+#alertBox_close:hover {
+    color: #FAFAFA;
+    border-color: #000;
+    background-color: #000;
+}
+
+#alertBox_text {
+    position: absolute;
+    width: 100%;
+    height: auto;
+    top: 20%;
+}
+
+#alertBox_text p {
+    font-size: 10pt;
+    padding: 2%;
+    text-align: left;
+}
+
+.button {
+    margin-top: 7%;
+    margin-left: 44%;
+    color: #000;
+    font-family: "Montserrat";
+    font-size: 9pt;
+    height: 2%;
+    width: 14%;
+
+    border: 1px solid;
+    border-color: #FAFAFA;
+    background-color: #FAFAFA;
+
+     border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
+}
+
+.button:hover {
+    color: #FAFAFA;
+    border-color: #000;
+    background-color: #000;
+}
