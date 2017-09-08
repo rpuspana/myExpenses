@@ -294,7 +294,7 @@ h2 {
 
 #alertBox {
     position: absolute;
-    height: 82%;
+/*    height: 85%;*/
     width: 25%;
     top: 50%;
     margin-left: 25%;
@@ -373,7 +373,7 @@ h2 {
 }
 
 .button {
-    margin-top: 7%;
+    margin-top: 4%;
     margin-left: 44%;
     color: #000;
     font-family: "Montserrat";
