@@ -114,9 +114,8 @@ var budgetController = (function() {
             prvData.budget = prvData.totals.inc - prvData.totals.exp;
             console.log("budget = %d", prvData.budget);
 
-            // calculate the % of income that we spent and round the result
-            prvData.expensesPercentage = Math.round((prvData.totals.exp * 100) / prvData.budget);
-            console.log("% the expenses represent = %d\%", prvData.expensesPercentage);
+            // calculate the percent of the income that was spent.The result will have 1 decimal and it will be rounded.
+            prvData.expensesPercentage = roundDecimal(((prvData.totals.exp * 100) / prvData.budget), 1);
         },
 
         // return the budget, total of expenses, of income, and expense percentage
@@ -124,10 +123,9 @@ var budgetController = (function() {
         pblGetBudgetExpIncExpPercentage: function() {
             return {
                 budget: prvData.budget,
-                totalExpenses : prvData.allItems.exp,
-                totalIncome : prvData.allItems.inc,
+                totalExpenses : prvData.totals.exp,
+                totalIncome : prvData.totals.inc,
                 expensesPercentBudget : prvData.expensesPercentage
-
             };
         }
     }
@@ -337,12 +335,19 @@ var controller = (function(budgetCtrl, UIctrl) {
     // calculate the budget based on the last submited or selected transaction and display it on the UI
     var prvUpdateBudget = function() {
 
+        // object holding:
+        // the budget after the last transaction, total expenses, total incomes,
+        // how much of the budget in % the expenses represent
+        var budgetIncExpExppercentage;
+
         // calculate the budget taking into account the submited transaction
         budgetCtrl.pblCalculateBudget();
 
         // return the new budget
+        budgetIncExpExppercentage = budgetCtrl.pblGetBudgetExpIncExpPercentage();
 
         // display the newly calculated budget on the UI
+        console.log(budgetIncExpExppercentage);
 
     };
 
@@ -401,6 +406,7 @@ var controller = (function(budgetCtrl, UIctrl) {
 
 })(budgetController, uiController);
 
+
 // register click event for the modal window's X button
 document.getElementById("alertBox_close").addEventListener("click", function () {
 
@@ -408,5 +414,19 @@ document.getElementById("alertBox_close").addEventListener("click", function () 
     document.getElementById("alertBox_container").style.visibility = "hidden";
 });
 
-// Global execution scope
+
+// start the app
 controller.initialiseVarsAndEvents();
+
+
+// *** App function library ***
+
+// return a number with rounded n-th decimal
+// value      Number  the floating point number to be rounded
+// precision  Number  the position of the decimal to be rounded
+//   E.g  precision = 1, the first digit shuld be rounded
+//   E.g  precision = 2, the second digit shuld be rounded
+function roundDecimal(value, precision) {
+    var multiplier = Math.pow(10, precision || 0);
+    return Math.round(value * multiplier) / multiplier;
+}
