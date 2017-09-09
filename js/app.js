@@ -118,6 +118,18 @@ var budgetController = (function() {
             prvData.expensesPercentage = Math.round((prvData.totals.exp * 100) / prvData.budget);
             console.log("% the expenses represent = %d\%", prvData.expensesPercentage);
         },
+
+        // return the budget, total of expenses, of income, and expense percentage
+        // it's not a good idea to return the prvData object to be altered by another module
+        pblGetBudgetExpIncExpPercentage: function() {
+            return {
+                budget: prvData.budget,
+                totalExpenses : prvData.allItems.exp,
+                totalIncome : prvData.allItems.inc,
+                expensesPercentBudget : prvData.expensesPercentage
+
+            };
+        }
     }
 
 })();
