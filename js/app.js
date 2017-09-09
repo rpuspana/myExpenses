@@ -114,8 +114,9 @@ var budgetController = (function() {
             prvData.budget = prvData.totals.inc - prvData.totals.exp;
             console.log("budget = %d", prvData.budget);
 
-            // calculate the percent of the income that was spent.The result will have 1 decimal and it will be rounded.
-            prvData.expensesPercentage = roundDecimal(((prvData.totals.exp * 100) / prvData.budget), 1);
+            // calculate the percent of how much the total expenses represent out of the total income.
+            // The result will have 1 decimal and it will be rounded.
+            prvData.expensesPercentageIncome = roundDecimal(((prvData.totals.exp * 100) / prvData.totals.inc), 1);
         },
 
         // return the budget, total of expenses, of income, and expense percentage
@@ -125,7 +126,7 @@ var budgetController = (function() {
                 budget: prvData.budget,
                 totalExpenses : prvData.totals.exp,
                 totalIncome : prvData.totals.inc,
-                expensesPercentBudget : prvData.expensesPercentage
+                expensesPercentIncome : prvData.expensesPercentageIncome
             };
         }
     }
