@@ -46,9 +46,9 @@ var budgetController = (function() {
         // total budget: incomes - expenses
         budget: 0,
 
-        // how much of the budget, in %, the expenses represent
-        // -1 = there is no budget, no total expenses and no total incomes
-        expensesPercentage: -1
+        // how much of the total income, in %, the total expenses represent
+        // -1 = there is no income submited
+        expensesPercentageIncome: -1
     };
 
     // calculate total income or total expenses
@@ -114,9 +114,14 @@ var budgetController = (function() {
             prvData.budget = prvData.totals.inc - prvData.totals.exp;
             console.log("budget = %d", prvData.budget);
 
-            // calculate the percent of how much the total expenses represent out of the total income.
-            // The result will have 1 decimal and it will be rounded.
-            prvData.expensesPercentageIncome = roundDecimal(((prvData.totals.exp * 100) / prvData.totals.inc), 1);
+            // if at least one income transaction was submited
+            // else prvData.expensesPercentageIncome = -1 it's default value
+            if (prvData.totals.inc > 0){
+
+                // calculate the percent of how much the total expenses represent out of the total income.
+                // The result will have 1 decimal and it will be rounded.
+                prvData.expensesPercentageIncome = roundDecimal(((prvData.totals.exp * 100) / prvData.totals.inc), 1);
+            }
         },
 
         // return the budget, total of expenses, of income, and expense percentage
