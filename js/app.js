@@ -241,6 +241,18 @@ var uiController = (function() {
             transFormDescAndValueFieldsArray[0].focus();
         },
 
+        // display on the UI the total income, the total expenses, the budget and
+        // how much of the total income the expenses represent in percentages
+        pblDisplayTransactionOverview: function() {
+
+            var budget = budgetController.pblGetBudgetExpIncExpPercentage();
+
+            document.querySelector(".budget__value").textContent = budget.budget;
+            document.querySelector(".budget__income__value").textContent = budget.totalIncome;
+            document.querySelector(".budget__expenses__value").textContent = budget.totalExpenses;
+            document.querySelector(".budget__expenses__percentage").textContent = budget.expensesPercentIncome + "%";
+        },
+
         // create and display a custom popup window
         // text    String  body text to be displayed in the popup
         // type    String  type of popup to be displayed
@@ -354,6 +366,7 @@ var controller = (function(budgetCtrl, UIctrl) {
 
         // display the newly calculated budget on the UI
         console.log(budgetIncExpExppercentage);
+        uiController.pblDisplayTransactionOverview();
 
     };
 
@@ -387,7 +400,7 @@ var controller = (function(budgetCtrl, UIctrl) {
             // after transaction submit, clear the transaction's details from the transaction input form
             uiController.pblClearTransFormFields();
 
-            // calculate the budget and displai it on the UI
+            // calculate the budget and display it on the UI
             prvUpdateBudget();
         }
         else {
