@@ -149,7 +149,11 @@ var uiController = (function() {
         inputValue: ".add__value",
         inputButton: ".add__btn",
         incomeContainer: ".income__list",
-        expenseContainer: ".expenses__list"
+        expenseContainer: ".expenses__list",
+        budgetLabel: ".budget__value",
+        incomeLabel: ".budget__income__value",
+        expenseLabel: ".budget__income__value",
+        expPercentTotalInc: ".budget__expenses__percentage"
     };
 
     return {
