@@ -144,16 +144,16 @@ var uiController = (function() {
 
     // private object containing the class names used in index.html and style.css
     var prvDOMstrings = {
-        inputType: ".add__type",
-        inputDescription: ".add__description",
-        inputValue: ".add__value",
-        inputButton: ".add__btn",
-        incomeContainer: ".income__list",
-        expenseContainer: ".expenses__list",
-        budgetLabel: ".budget__value",
-        incomeLabel: ".budget__income__value",
-        expenseLabel: ".budget__income__value",
-        expPercentTotalInc: ".budget__expenses__percentage"
+        inputType:              ".add__type",
+        inputDescription:       ".add__description",
+        inputValue:             ".add__value",
+        inputButton:            ".add__btn",
+        incomeContainer:        ".income__list",
+        expenseContainer:       ".expenses__list",
+        budgetLabel:            ".budget__value",
+        incomeLabel:            ".budget__income__value",
+        expenseLabel:           ".budget__expenses__value",
+        expPercentTotalInc:     ".budget__expenses__percentage"
     };
 
     return {
@@ -247,14 +247,30 @@ var uiController = (function() {
 
         // display on the UI the total income, the total expenses, the budget and
         // how much of the total income the expenses represent in percentages
-        pblDisplayTransactionOverview: function() {
+        pblDisplayTransactionOverview: function(budgetObj) {
 
-            var budget = budgetController.pblGetBudgetExpIncExpPercentage();
+            // select the budget label on the UI
+            document.querySelector(prvDOMstrings.budgetLabel).textContent = budgetObj.budget;
 
-            document.querySelector(".budget__value").textContent = budget.budget;
-            document.querySelector(".budget__income__value").textContent = budget.totalIncome;
-            document.querySelector(".budget__expenses__value").textContent = budget.totalExpenses;
-            document.querySelector(".budget__expenses__percentage").textContent = budget.expensesPercentIncome + "%";
+            // select the green background total income label on the UI
+            document.querySelector(prvDOMstrings.incomeLabel).textContent = budgetObj.totalIncome;
+
+            // select the red background total expenses label on the UI
+            document.querySelector(prvDOMstrings.expenseLabel).textContent = budgetObj.totalExpenses;
+
+            // select the expenses percent label to the right of the total expenses label on the UI
+            var expensePercentTotalIncElem =  document.querySelector(prvDOMstrings.expPercentTotalInc);
+
+            // if at least one income transaction was submited
+            if (budgetObj.expensesPercentIncome !== -1) {
+                expensePercentTotalIncElem.style.visibility = "visible";
+                expensePercentTotalIncElem.textContent = budgetObj.expensesPercentIncome + "%";
+            }
+            // if there are no income transactions entered
+            else {
+                // hide the div
+                expensePercentTotalIncElem.style.visibility = "hidden";
+            }
         },
 
         // create and display a custom popup window
@@ -363,14 +379,14 @@ var controller = (function(budgetCtrl, UIctrl) {
         var budgetIncExpExppercentage;
 
         // calculate the budget taking into account the submited transaction
-        budgetCtrl.pblCalculateBudget();
+        budgetController.pblCalculateBudget();
 
         // return the new budget
-        budgetIncExpExppercentage = budgetCtrl.pblGetBudgetExpIncExpPercentage();
+        budgetIncExpExppercentage = budgetController.pblGetBudgetExpIncExpPercentage();
 
         // display the newly calculated budget on the UI
-        console.log(budgetIncExpExppercentage);
-        uiController.pblDisplayTransactionOverview();
+        console.info(budgetIncExpExppercentage);
+        uiController.pblDisplayTransactionOverview(budgetIncExpExppercentage);
 
     };
 
