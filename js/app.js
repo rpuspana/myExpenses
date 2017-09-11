@@ -328,6 +328,13 @@ var uiController = (function() {
 // App controller for communicating between the budgetController and the UIconroller
 var controller = (function(budgetCtrl, UIctrl) {
 
+    // register click event for the input validation popup's X button
+    document.getElementById("alertBox_close").addEventListener("click", function () {
+
+        // hide the modal window when it's X button is clicked
+        document.getElementById("alertBox_container").style.visibility = "hidden";
+    });
+
     // private function to place the event listeners and the HTML tags' classes
     var prvSetupEventListeners = function() {
 
@@ -446,12 +453,7 @@ var controller = (function(budgetCtrl, UIctrl) {
 })(budgetController, uiController);
 
 
-// register click event for the modal window's X button
-document.getElementById("alertBox_close").addEventListener("click", function () {
 
-    // hide the modal window when it's X button is clicked
-    document.getElementById("alertBox_container").style.visibility = "hidden";
-});
 
 
 // start the app
