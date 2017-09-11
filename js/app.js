@@ -153,7 +153,8 @@ var uiController = (function() {
         budgetLabel:            ".budget__value",
         incomeLabel:            ".budget__income__value",
         expenseLabel:           ".budget__expenses__value",
-        expPercentTotalInc:     ".budget__expenses__percentage"
+        expPercentTotalInc:     ".budget__expenses__percentage",
+        transactionContainer:   ".container"
     };
 
     return {
@@ -321,25 +322,29 @@ var uiController = (function() {
             });
         }
     }
-
 })();
 
 
 // App controller for communicating between the budgetController and the UIconroller
 var controller = (function(budgetCtrl, UIctrl) {
 
-    // register click event for the input validation popup's X button
-    document.getElementById("alertBox_close").addEventListener("click", function () {
-
-        // hide the modal window when it's X button is clicked
-        document.getElementById("alertBox_container").style.visibility = "hidden";
-    });
-
     // private function to place the event listeners and the HTML tags' classes
     var prvSetupEventListeners = function() {
 
         // object containing the class names in the index.html and style.css
         var DOMstrings = uiController.pblGetDOMstrings();
+
+         // register click event for the input validation popup's X button
+        document.getElementById("alertBox_close").addEventListener("click", function () {
+
+            // hide the modal window when it's X button is clicked
+            document.getElementById("alertBox_container").style.visibility = "hidden";
+        });
+
+        // add event listener for the .container div to catch the click event that bubbles up from the
+        // .item__delete__btn <button> tag
+        document.querySelector(DOMstrings.transactionContainer).addEventListener("click", deleteItem);
+
 
         // register click event for the button with the tick sign
         document.querySelector(DOMstrings.inputButton).addEventListener("click", prvAddItem, false);
