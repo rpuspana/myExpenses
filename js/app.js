@@ -343,7 +343,7 @@ var controller = (function(budgetCtrl, UIctrl) {
 
         // add event listener for the .container div to catch the click event that bubbles up from the
         // .item__delete__btn <button> tag
-        document.querySelector(DOMstrings.transactionContainer).addEventListener("click", deleteItem);
+        document.querySelector(DOMstrings.transactionContainer).addEventListener("click", prvDeleteItem);
 
 
         // register click event for the button with the tick sign
