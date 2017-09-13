@@ -27,6 +27,7 @@ var budgetController = (function() {
     // every expense entered in the UI will map to an instance of prvExpense
     // every income entered in the UI will map to an instance of prvIncome
     var prvData = {
+
         // object with all the expenses and all of the incomes
         allItems: {
             // all expense transactions
@@ -35,6 +36,7 @@ var budgetController = (function() {
             // all income transactions
             inc: []
         },
+
         // object with expenses total and income total
         totals: {
             // sum of all expense transactions
@@ -43,6 +45,7 @@ var budgetController = (function() {
             // sum of all income transactions
             inc: 0
         },
+
         // total budget: incomes - expenses
         budget: 0,
 
@@ -93,6 +96,40 @@ var budgetController = (function() {
 
             // return new instance of prvExpense or prvIncome
             return newItem;
+        },
+
+        // delete a transaction from the prvData.allItems.exp or prvData.allItems.exp arrays
+        // transType  string  the trasaction type "exp" or "inc" in order to extract the element from the appropiate array
+        // transId    string  the trasaction id to be extracted from prvData.allItems.exp or prvData.allItems.inc
+        pblDeleteItem: function(transType, transId) {
+
+            console.info("transType %s", transType);
+            console.info("transId %d", transId);
+
+            var trasactionTypeIds, indexDeleteElem;
+
+            // id = 6
+            // [1 2 4 6 8]
+            // delete the item at index at which 6 sits
+
+            // create an array with all the ids of the trasactions submited of type transType
+            trasactionTypeIds = prvData.allItems[transType].map(function(currentElem) {
+                return currentElem.id;
+            });
+            console.info("trasactionTypeIds %O", trasactionTypeIds);
+
+            // get the index of the element with id transId from the trasactionTypeIds array
+            indexDeleteElem = trasactionTypeIds.indexOf(transId);
+            console.info("indexDeleteElem %O", indexDeleteElem);
+
+            // if the id that was passed to the function is found in the transaction ids
+            if (indexDeleteElem !== -1) {
+
+                // detele the item at index idexDeleteElem from the prvData.allItems[transType] array
+                prvData.allItems[transType].splice(indexDeleteElem, 1);
+            }
+            console.info(" prvData.allItems[%s] %O", transType, prvData.allItems[transType]);
+
         },
 
         // to delete
@@ -194,14 +231,14 @@ var uiController = (function() {
                 // - transaction's HTML id (income-%id%),
                 // - the transaction description (%description%),
                 // - transaction's value(%value%)
-                transactionListItem = '<div class="item clearfix" id="income-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete__btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
+                transactionListItem = '<div class="item clearfix" id="inc-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete__btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
 
                 transListRootElemClass = prvDOMstrings.incomeContainer;
             }
             // if the type of transaction is an expense
             else if (type === "exp") {
 
-                transactionListItem = '<div class="item clearfix" id="expense-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete__btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
+                transactionListItem = '<div class="item clearfix" id="exp-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete__btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
 
                 transListRootElemClass = prvDOMstrings.expenseContainer;
             }
@@ -212,7 +249,7 @@ var uiController = (function() {
             newTransactionListItem = newTransactionListItem.replace("%value%", transcation.value);
 
             // select the transacton column father HTML element and insert the new transaction as it's first child
-            // Note - the newest transaction will be placed at the end of the income or expense column
+            // the newest transaction will be placed at the end of the income or expense column
             document.querySelector(transListRootElemClass).insertAdjacentHTML("beforeend", newTransactionListItem);
         },
 
@@ -438,7 +475,8 @@ var controller = (function(budgetCtrl, UIctrl) {
         else {
 
              // HTML to replace the content(if any) of the alertBox_text div
-            var modalWindowInnerHTML = "<p>The description should have at least three characters. The value should have at least one digit, excluding  0, before submiting the transaction.</p>";
+            var modalWindowInnerHTML = "<p>The description should have at least three characters." +
+                " The value should have at least one digit, excluding  0, before submiting the transaction.</p>";
 
             // display custom modal window with this text, type and width
             uiController.pblDisplayPopup(modalWindowInnerHTML, "err", "22%");
@@ -448,6 +486,55 @@ var controller = (function(budgetCtrl, UIctrl) {
         }
     };
 
+    // function for deleting a submited transaction from the income or expense columns
+    // event   click event  an event that was fired up from below the .container div tag
+    var prvDeleteItem = function(event) {
+
+        var strList, transactionType, transactionId;
+
+        console.info(event.target.parentNode.parentNode.parentNode.parentNode);
+
+        // return <div class="item clearfix" id="income-0">...</div> when
+        // the user clicks the .continer div and any of it's children
+        // The instr is safe to use because in uiController.pblAddListItem() we used a <div>
+        // structure that matches the instruction below to insert an income/expense trasaction
+        // in the income/expense columns
+        transactionId = event.target.parentNode.parentNode.parentNode.parentNode.id;
+
+        // this will coert to true or false if an id attribute exists inside the node that transactionId points to
+        if (transactionId) {
+
+            // transform the string primitive into an object and call the split method
+            // return a list holding the trasaction type and the index of the trasaction in it's corresponding array
+            strList = transactionId.split("-");
+
+            // select the trasacton's type
+            transactionType = strList[0];
+
+            // select the trasaction's id
+            transactionId = parseInt(strList[1]);
+
+            if (!isNaN(transactionId))
+            {
+                // delete the trasaction from the right transaction array
+            budgetCtrl.pblDeleteItem(transactionType, transactionId);
+
+            // delte the item from the UI
+
+            // update and show the new budget, total income, total expenses, expense percentage out of income
+            }
+            else {
+                console.err("The value of the id attribute of %O, doesn't containg a number." +
+                            "\nThe trasanction will not be removed from budgetController.prvData.allItems[%s]." +
+                            "\nThe transaction will not dissapear from the UI." +
+                            "\nThe financial situation overview panel from the UI will not change.", event.target.parentNode.parentNode.parentNode.parentNode,
+                            transactionType);
+            }
+
+        }
+    };
+
+
     return {
         initialiseVarsAndEvents: function() {
             console.log("App has started.");
@@ -456,9 +543,6 @@ var controller = (function(budgetCtrl, UIctrl) {
     }
 
 })(budgetController, uiController);
-
-
-
 
 
 // start the app
