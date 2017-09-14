@@ -83,7 +83,7 @@ var controller = (function(budgetCtrl, UIctrl) {
     };
 
     // update the percentage value in the red box next to a submited expense transaction
-    var prvUpdateExpenseTrasPercentValue = function() {
+    var prvUpdatePercentageSubmitedExpenses = function() {
 
         // calculate the percentages
 
@@ -124,6 +124,9 @@ var controller = (function(budgetCtrl, UIctrl) {
 
             // calculate the budget and display it on the UI
             prvUpdateBudget();
+
+            // for each submited expense transaction calculate how much this expense representes out of the total income
+            prvUpdatePercentageSubmitedExpenses();
         }
         else {
 
@@ -186,6 +189,8 @@ var controller = (function(budgetCtrl, UIctrl) {
                             transactionType);
             }
 
+             // for each submited expense transaction calculate how much this expense representes out of the total income
+            prvUpdatePercentageSubmitedExpenses();
         }
     };
 
