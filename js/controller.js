@@ -192,16 +192,3 @@ var controller = (function(budgetCtrl, UIctrl) {
 
 // start the app
 controller.initialiseVarsAndEvents();
-
-
-// *** App function library ***
-
-// return a number with rounded n-th decimal
-// value      Number  the floating point number to be rounded
-// precision  Number  the position of the decimal to be rounded
-//   E.g  precision = 1, the first digit shuld be rounded
-//   E.g  precision = 2, the second digit shuld be rounded
-function roundDecimal(value, precision) {
-    var multiplier = Math.pow(10, precision || 0);
-    return Math.round(value * multiplier) / multiplier;
-}
