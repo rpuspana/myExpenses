@@ -82,6 +82,16 @@ var controller = (function(budgetCtrl, UIctrl) {
 
     };
 
+    // update the percentage value in the red box next to a submited expense transaction
+    var prvUpdateExpenseTrasPercentValue = function() {
+
+        // calculate the percentages
+
+        // read the percentages from the budget controller
+
+        // update the UI with the new percentages
+    };
+
     // private function for receiving the user input from the UI,
     // entering the new transaction under the income or expense column on the UI, a
     // djusting the budget according to the user's transaction
