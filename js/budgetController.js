@@ -35,7 +35,7 @@ var budgetController = (function() {
     }
 
     // getter for the prvExpense.percentageOfTransOutOfTotalIncome
-    prvExpense.prototype.getPercentageOfSubmitedExpense = function(elemIndex) {
+    prvExpense.prototype.getPercentageOfSubmitedExpense = function() {
 
         return this.calcPercentageOfSubmitedExpense();
     }
