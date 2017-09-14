@@ -14,10 +14,25 @@ var budgetController = (function() {
 
     // private Expense constructor
     var prvExpense = function(id, description, value) {
-       this.id = id;
-       this.description = description;
-       this.value = value;
+        this.id = id;
+        this.description = description;
+        this.value = value;
+        this.percentageOfTransOutOfTotalIncome = -1; // -1 = value can't be calculated yet
     };
+
+    // calculate how much in % an expense represents out of the total income and sotre this value in
+    // prvExpense.percentageOfTransOutOfTotalIncome
+    // totalIncome  Number  the total of the submited income transactions
+    prvExpense.prototype.calcPercentageOfSubmitedExpense = function(totalIncome) {
+
+        if (totalIncome > 0) {
+            this.percentageOfTransOutOfTotalIncome = roundDecimal((this.value / totalIncome) * 100, 1);
+        }
+        else {
+            // when we delete all of the expense transactions, we need to reset this variable
+            this.percentageOfTransOutOfTotalIncome = -1;
+        }
+    }
 
     // private Income constructor
     var prvIncome = function(id, description, value) {
@@ -162,6 +177,16 @@ var budgetController = (function() {
                 // The result will have 1 decimal and it will be rounded.
                 prvData.expensesPercentageIncome = roundDecimal(((prvData.totals.exp * 100) / prvData.totals.inc), 1);
             }
+        },
+
+        // calculate percentage for each expense object that is stored in the prvData.allItems.exp array
+        pblCalculatePercentageOfSubmitedExpenses: function() {
+            // a = 20
+            // b = 10
+            // c = 40
+            // total income 100
+            // a = 20/100 * 100 = 20% out of total income
+            // b = 10/100 * 100 = 10% out of total income
         },
 
         // return the budget, total of expenses, of income, and expense percentage
