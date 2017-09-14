@@ -85,7 +85,9 @@ var controller = (function(budgetCtrl, UIctrl) {
     // update the percentage value in the red box next to a submited expense transaction
     var prvUpdatePercentageSubmitedExpenses = function() {
 
-        // calculate the percentages
+        // for each submited expense, calculate how much it's value represents in %,
+        // out of the total income
+        budgetCtrl.pblSetPercentageOfExpenseOutOfTotalIncomeForEachExp();
 
         // read the percentages from the budget controller
 
