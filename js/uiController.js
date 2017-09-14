@@ -8,8 +8,6 @@
 // UI module manipulates the UI of the app
 var uiController = (function() {
 
-    console.log("UI controller is loading...");
-
     // private object containing the class names used in index.html and style.css
     var prvDOMstrings = {
         inputType:              ".add__type",
