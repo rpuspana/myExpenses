@@ -4,13 +4,13 @@
  * Version 1.0
  */
 
+console.log("Loading controllers.");
 
 // module that handles the budget data using the module pattern
 // this controller keeps track of all the income, expenses, the budget itself, and
 // also the percentage of how much an income/expense represents of the total budget
 var budgetController = (function() {
 
-    console.log("Loading controllers.");
     console.log("Budet controller is loading...");
 
     // private Expense constructor
@@ -175,13 +175,7 @@ var budgetController = (function() {
                 expensesPercentIncome : prvData.expensesPercentageIncome
             };
         },
-
-        // log message to console
-        // msg  string  message to be logged to the browser's console
-        pblLogMsgToConsole: function(msg) {
-            console.log(msg);
-        }
     }
 })();
 
-budgetController.pblLogMsgToConsole("Budget controller has finished loading.");
+console.log("Budget controller has finished loading.");
