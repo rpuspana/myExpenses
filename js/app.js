@@ -134,7 +134,7 @@ var budgetController = (function() {
 
         // to delete
         pblTestGetDataStr: function() {
-            console.info("prvData.allItems = %O", prvData.allItems);
+            console.info("prvData = %O", prvData);
         },
 
         // calculate the budget after submiting a transaction
@@ -259,6 +259,26 @@ var uiController = (function() {
             return prvDOMstrings;
         },
 
+        // public method for deleting a submited transaction from the income or expense column based it's type
+        // transId  string  id value of the 4-th ancestor of the event target DOM element
+        pblDeleteListItem :function(transId) {
+
+            console.log("trans id = %s", transId);
+
+            var deleteNode, fatherNode;
+
+            // select the node to delete
+            deleteNode = document.getElementById(transId);
+            console.log("deleteNode = %O", deleteNode);
+
+            // select the father of the node to delete
+            fatherNode = deleteNode.parentNode;
+            console.log("fatherNode = %O", fatherNode);
+
+            // remove the node from the DOM tree
+            console.info(fatherNode.removeChild(deleteNode));
+        },
+
         // clear the the transaction's details from the transaction form on the UI (after the user submited the transaction)
         pblClearTransFormFields: function() {
             // NodeList instance that includes the transaction's description and value UI fields
@@ -300,14 +320,13 @@ var uiController = (function() {
             var expensePercentTotalIncElem =  document.querySelector(prvDOMstrings.expPercentTotalInc);
 
             // if at least one income transaction was submited
-            if (budgetObj.expensesPercentIncome !== -1) {
-                expensePercentTotalIncElem.style.visibility = "visible";
+            if (budgetObj.expensesPercentIncome > 0) {
                 expensePercentTotalIncElem.textContent = budgetObj.expensesPercentIncome + "%";
             }
-            // if there are no income transactions entered
+            // if there are no expsense transactions submited
             else {
-                // hide the div
-                expensePercentTotalIncElem.style.visibility = "hidden";
+                // replace 0% with "---" in the ".budget__expenses__percentage" <div>
+                expensePercentTotalIncElem.textContent = "---";
             }
         },
 
@@ -490,7 +509,7 @@ var controller = (function(budgetCtrl, UIctrl) {
     // event   click event  an event that was fired up from below the .container div tag
     var prvDeleteItem = function(event) {
 
-        var strList, transactionType, transactionId;
+        var transactionIdStr, strList, transactionType, transactionIdNumber;
 
         console.info(event.target.parentNode.parentNode.parentNode.parentNode);
 
@@ -499,29 +518,31 @@ var controller = (function(budgetCtrl, UIctrl) {
         // The instr is safe to use because in uiController.pblAddListItem() we used a <div>
         // structure that matches the instruction below to insert an income/expense trasaction
         // in the income/expense columns
-        transactionId = event.target.parentNode.parentNode.parentNode.parentNode.id;
+        transactionIdStr = event.target.parentNode.parentNode.parentNode.parentNode.id;
 
         // this will coert to true or false if an id attribute exists inside the node that transactionId points to
-        if (transactionId) {
+        if (transactionIdStr) {
 
             // transform the string primitive into an object and call the split method
             // return a list holding the trasaction type and the index of the trasaction in it's corresponding array
-            strList = transactionId.split("-");
+            strList = transactionIdStr.split("-");
 
             // select the trasacton's type
             transactionType = strList[0];
 
             // select the trasaction's id
-            transactionId = parseInt(strList[1]);
+            transactionIdNumber = parseInt(strList[1]);
 
-            if (!isNaN(transactionId))
+            if (!isNaN(transactionIdNumber))
             {
-                // delete the trasaction from the right transaction array
-            budgetCtrl.pblDeleteItem(transactionType, transactionId);
+                // delete the trasaction from the appropiate transaction array
+                budgetCtrl.pblDeleteItem(transactionType, transactionIdNumber);
 
-            // delte the item from the UI
+                // delete the transaction from the UI
+                uiController.pblDeleteListItem(transactionIdStr);
 
-            // update and show the new budget, total income, total expenses, expense percentage out of income
+                // update and show the new budget, total income, total expenses, expense percentage out of income
+                prvUpdateBudget();
             }
             else {
                 console.err("The value of the id attribute of %O, doesn't containg a number." +
