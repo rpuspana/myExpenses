@@ -17,26 +17,24 @@ var budgetController = (function() {
         this.id = id;
         this.description = description;
         this.value = value;
-        this.percentageOfTransOutOfTotalIncome = -1; // -1 = value can't be calculated yet
+        this.percentageOfExpenseOutOfTotalIncome = -1; // -1 = value can't be calculated yet
     };
 
-    // calculate how much in % an expense represents out of the total income and sotre this value in
-    // prvExpense.percentageOfTransOutOfTotalIncome
+    // calculate how much in % an expense represents out of the total income and store this value in
+    // prvExpense.percentageOfExpenseOutOfTotalIncome
     // totalIncome  Number  the total of the submited income transactions
-    prvExpense.prototype.calcPercentageOfSubmitedExpense = function(totalIncome) {
-
-        if (totalIncome > 0) {
-            this.percentageOfTransOutOfTotalIncome = roundDecimal((this.value / totalIncome) * 100, 1);
+    prvExpense.prototype.calculatePercentageOfExpenseOutOfTotalIncome = function() {
+        if (prvData.totals.inc > 0) {
+            this.percentageOfExpenseOutOfTotalIncome = roundDecimal((this.value / prvData.totals.inc) * 100, 1);
         }
         else {
             // when we delete all of the expense transactions, we need to reset this variable
-            this.percentageOfTransOutOfTotalIncome = -1;
+            this.percentageOfExpenseOutOfTotalIncome = -1;
         }
     }
 
-    // getter for the prvExpense.percentageOfTransOutOfTotalIncome
+    // getter for the prvExpense.percentageOfExpenseOutOfTotalIncome
     prvExpense.prototype.getPercentageOfSubmitedExpense = function() {
-
         return this.calcPercentageOfSubmitedExpense();
     }
 
@@ -186,13 +184,10 @@ var budgetController = (function() {
         },
 
         // calculate percentage for each expense object that is stored in the prvData.allItems.exp array
-        pblCalculatePercentageOfSubmitedExpenses: function() {
-            // a = 20
-            // b = 10
-            // c = 40
-            // total income 100
-            // a = 20/100 * 100 = 20% out of total income
-            // b = 10/100 * 100 = 10% out of total income
+        pblSetPercentageOfExpenseOutOfTotalIncomeForEachExp: function() {
+            prvData.allItems.exp.forEach(function(currentElem) {
+                currentElem.calculatePercentageOfExpenseOutOfTotalIncome();
+            })
         },
 
         // return the budget, total of expenses, of income, and expense percentage
