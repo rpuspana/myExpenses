@@ -34,6 +34,12 @@ var budgetController = (function() {
         }
     }
 
+    // getter for the prvExpense.percentageOfTransOutOfTotalIncome
+    prvExpense.prototype.getPercentageOfSubmitedExpense = function(elemIndex) {
+
+        return this.calcPercentageOfSubmitedExpense();
+    }
+
     // private Income constructor
     var prvIncome = function(id, description, value) {
         this.id = id;
