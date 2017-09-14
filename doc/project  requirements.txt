@@ -12,3 +12,15 @@ transaction description with at least 3 chacarters and a transaction value of at
 * description and transaction value starting with a letter.
   if ending with a letter, only the numbers until the letter will be entered
   
+
+# BUDGET OVERVIEW
+-----------------
+
+## percentage next to the total expense value
+----------------------------------------------
+how much the total income, the total expenses represent, in percentages
+
+
+## percentage next to each submited expense in the Expense column
+------------------------------------------------------------------
+how much of the total income, a particular submited expense transaction represents.
