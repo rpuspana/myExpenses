@@ -10,17 +10,24 @@ var uiController = (function() {
 
     // private object containing the class names used in index.html and style.css
     var prvDOMstrings = {
-        inputType:              ".add__type",
-        inputDescription:       ".add__description",
-        inputValue:             ".add__value",
-        inputButton:            ".add__btn",
-        incomeContainer:        ".income__list",
-        expenseContainer:       ".expenses__list",
-        budgetLabel:            ".budget__value",
-        incomeLabel:            ".budget__income__value",
-        expenseLabel:           ".budget__expenses__value",
-        expPercentTotalInc:     ".budget__expenses__percentage",
-        transactionContainer:   ".container"
+        inputType: ".add__type",
+        inputDescription: ".add__description",
+        inputValue: ".add__value",
+        inputButton: ".add__btn",
+        incomeContainer: ".income__list",
+        expenseContainer: ".expenses__list",
+        budgetLabel: ".budget__value",
+        incomeLabel: ".budget__income__value",
+        expenseLabel: ".budget__expenses__value",
+        expPercentTotalInc: ".budget__expenses__percentage",
+        transactionContainer: ".container",
+        expensePercentageLabel: ".item__percentage",
+        errorPopupOKbutton: "err_alert_box_OK_button",
+        errorPopupXbutton: "alert_box_x_button",
+        popupContainer: "alertBox_container",
+        popupButtonDiv: "alertBox_button_div",
+        popupTextAndButtonContainer: "alertBox_text",
+        popupMainDiv: "alertBox"
     };
 
     return {
@@ -86,6 +93,44 @@ var uiController = (function() {
         // in the index.html and style.css
         pblGetDOMstrings: function() {
             return prvDOMstrings;
+        },
+
+        // for each submited expense, display the percentage Of that expense out of the total income
+        // expensePercentageTotalIncomeArray  Array instance  array with the expense percentages out of the total income for each expense
+        pbldisplayPercentageOfExpenseOutOfTotalIncomeForAllExpenses: function(expensePercentageTotalIncomeArray) {
+
+            var expensePercentageNodes;
+
+            // select all the elements that have the item__percentage class
+            expensePercentageNodes = document.querySelectorAll(prvDOMstrings.expensePercentageLabel);
+
+            // display the expense percentage out of the total income in each NodeList with class prvDOMstrings.expensePercentageLabel
+            // expensePercentageNode  NodeList instance  the DOM node that has the the class=prvDOMstrings.expensePercentageLabel
+            // index                  Number             index of the current DOM node in the expensePercentageNodes
+            var displayExpensePercentage = function(expensePercentageNode, index) {
+
+                // if the expense percentage passed in as a parameter > 0
+                if (expensePercentageTotalIncomeArray[index] > 0) {
+                    expensePercentageNode.textContent = expensePercentageTotalIncomeArray[index] + "%";
+                }
+                else {
+                    expensePercentageNode.textContent = "---";
+                }
+            }
+
+            // if we found at least one element with HTML class prvDOMstrings.expensePercentageLabel in the DOM
+            if (expensePercentageNodes.length > 0) {
+
+                for(var i = 0; i < expensePercentageNodes.length; i++) {
+                    displayExpensePercentage(expensePercentageNodes[i], i);
+                }
+            }
+            // if no element with this class was found in the DOM
+            else {
+                console.log("The user did not submit any expenses yet, or there are no nodes, in the DOM,  with the attribute class=%s yet.\n" +
+                             "Can't display expense percentage out of total income label.", prvDOMstrings.expensePercentageLabel);
+            }
+
         },
 
         // public method for deleting a submited transaction from the income or expense column based it's type
@@ -169,14 +214,16 @@ var uiController = (function() {
             var button, popupColor;
 
             if (type === "err") {
-                button = '<div id="alertBox_button_div"><input id="err_alert_box_button" class="button" type="button" value="OK" alt="OK"></div>';
-                document.getElementById('alertBox_text').innerHTML = text + button;
+                button = '<div id="' + prvDOMstrings.popupButtonDiv + '"><input id="' +
+                         prvDOMstrings.errorPopupOKbutton + '" class="button" type="button" value="OK" alt="OK"></div>';
+
+                document.getElementById(prvDOMstrings.popupTextAndButtonContainer).innerHTML = text + button;
                 popupColor = "#D32C34";
-                elemId = "err_alert_box_button";
+                elemId = prvDOMstrings.errorPopupOKbutton;
             }
             else if (type === "info") {
                 // HTML of the button on the modal window
-                button = '<div id="alertBox_button_div"><input id="ok_alert_box_button" class="button" type="button" value="OK" alt="OK"></div>';
+                button = '<div id="alertBox_button_div"><input id="info_alert_box_OK_button" class="button" type="button" value="OK" alt="OK"></div>';
 
                 // insert the message and the OK button on the modal window
                 document.getElementById('alertBox_text').innerHTML = text + button;
@@ -188,7 +235,7 @@ var uiController = (function() {
 
             }
             else if (type === "prompt") {
-                button = '<div id="alertBox_button_div"><input id="alert_box_OK_button" class="button" type="button" value="OK" alt="OK"></div>';
+                button = '<div id="alertBox_button_div"><input id="info_alert_box_OK_button" class="button" type="button" value="OK" alt="OK"></div>';
                 document.getElementById('alertBox_text').innerHTML = text + field + button;
                 popupColor = "green";
             }
@@ -197,13 +244,13 @@ var uiController = (function() {
                 popupColor = "#D32C34";
             }
 
-            if (height !== undefined) {document.getElementById('alertBox').style.height = height;}
-            document.getElementById('alertBox_container').style.backgroundColor = popupColor;
-            document.getElementById('alertBox_container').style.visibility = "visible";
+            if (height !== undefined) {document.getElementById(prvDOMstrings.popupMainDiv).style.height = height;}
+            document.getElementById(prvDOMstrings.popupContainer).style.backgroundColor = popupColor;
+            document.getElementById(prvDOMstrings.popupContainer).style.visibility = "visible";
 
             // hide the custom popup when it's X button is clicked
             document.getElementById(elemId).addEventListener("click", function () {
-                    document.getElementById("alertBox_container").style.visibility = "hidden";
+                    document.getElementById(prvDOMstrings.popupContainer).style.visibility = "hidden";
             });
         }
     }
