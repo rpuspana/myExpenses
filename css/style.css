@@ -331,7 +331,7 @@ h2 {
     padding-left: 1%;
 }
 
-#alertBox_close {
+#alert_box_x_button {
     position: relative;
     float: right;
 
@@ -352,7 +352,7 @@ h2 {
     -webkit-border-radius: 10px 10px 10px 10px;
 }
 
-#alertBox_close:hover {
+#alert_box_x_buttone:hover {
     color: #FAFAFA;
     border-color: #000;
     background-color: #000;
