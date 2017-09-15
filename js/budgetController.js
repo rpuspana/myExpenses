@@ -35,7 +35,7 @@ var budgetController = (function() {
 
     // getter for the prvExpense.percentageOfExpenseOutOfTotalIncome property
     prvExpense.prototype.getPercentageOfSubmitedExpense = function() {
-        return this.percentageOfExpenseOutOfTotalIncome();
+        return this.percentageOfExpenseOutOfTotalIncome;
     }
 
     // private Income constructor
@@ -174,12 +174,16 @@ var budgetController = (function() {
             console.log("budget = %d", prvData.budget);
 
             // if at least one income transaction was submited
-            // else prvData.expensesPercentageIncome = -1 it's default value
+
             if (prvData.totals.inc > 0){
 
                 // calculate the percent of how much the total expenses represent out of the total income.
                 // The result will have 1 decimal and it will be rounded.
                 prvData.expensesPercentageIncome = roundDecimal(((prvData.totals.exp * 100) / prvData.totals.inc), 1);
+            }
+            // else prvData.expensesPercentageIncome = -1
+            else {
+                prvData.expensesPercentageIncome =  -1;
             }
         },
 
@@ -192,11 +196,13 @@ var budgetController = (function() {
 
         // create an array with each element being the percentage of a submited expense out of total income
         pblGetPercentageOfExpenseOutOfTotalIncomeForEachExp: function() {
-            var arrayPercentageOfExpenseOutOfTotalIncome = prvData.allItems.exp.map(function(currentElement) {
+            var arrayPercentageOfExpenseOutOfTotalIncome;
+
+            arrayPercentageOfExpenseOutOfTotalIncome = prvData.allItems.exp.map(function(currentElement) {
                 return currentElement.getPercentageOfSubmitedExpense();
             });
 
-            return listPercentageOfExpenseOutOfTotalIncome;
+            return arrayPercentageOfExpenseOutOfTotalIncome;
         },
 
         // return the budget, total of expenses, of income, and expense percentage
