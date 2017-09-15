@@ -15,7 +15,7 @@ var controller = (function(budgetCtrl, UIctrl) {
         var DOMstrings = uiController.pblGetDOMstrings();
 
          // register click event for the input validation popup's X button
-        document.getElementById("alertBox_close").addEventListener("click", function () {
+        document.getElementById(DOMstrings.errorPopupXbutton).addEventListener("click", function () {
 
             // hide the modal window when it's X button is clicked
             document.getElementById("alertBox_container").style.visibility = "hidden";
@@ -85,13 +85,18 @@ var controller = (function(budgetCtrl, UIctrl) {
     // update the percentage value in the red box next to a submited expense transaction
     var prvUpdatePercentageSubmitedExpenses = function() {
 
+        var expensePercentageOutOfTotalIncomeArray;
+
         // for each submited expense, calculate how much it's value represents in %,
         // out of the total income
-        budgetCtrl.pblSetPercentageOfExpenseOutOfTotalIncomeForEachExp();
+        budgetController.pblSetPercentageOfExpenseOutOfTotalIncomeForEachExp();
 
-        // read the percentages from the budget controller
+        // store this values in an array
+        expensePercentageOutOfTotalIncomeArray = budgetController.pblGetPercentageOfExpenseOutOfTotalIncomeForEachExp()
 
-        // update the UI with the new percentages
+        // for each submited expense in the UI update the expense percentage
+        console.log(expensePercentageOutOfTotalIncomeArray);
+        uiController.pbldisplayPercentageOfExpenseOutOfTotalIncomeForAllExpenses(expensePercentageOutOfTotalIncomeArray);
     };
 
     // private function for receiving the user input from the UI,
@@ -148,9 +153,12 @@ var controller = (function(budgetCtrl, UIctrl) {
     // event   click event  an event that was fired up from below the .container div tag
     var prvDeleteItem = function(event) {
 
-        var transactionIdStr, strList, transactionType, transactionIdNumber;
+        var transactionIdStr, strList, transactionType, transactionIdNumber, domClassesIds;
 
-        console.info(event.target.parentNode.parentNode.parentNode.parentNode);
+        console.info("event.target = %O", event.target);
+        console.info("event.target 4th parent = %O", event.target.parentNode.parentNode.parentNode.parentNode);
+
+        domClassesIds = uiController.pblGetDOMstrings();
 
         // return <div class="item clearfix" id="income-0">...</div> when
         // the user clicks the .continer div and any of it's children
@@ -159,43 +167,46 @@ var controller = (function(budgetCtrl, UIctrl) {
         // in the income/expense columns
         transactionIdStr = event.target.parentNode.parentNode.parentNode.parentNode.id;
 
-        // this will coert to true or false if an id attribute exists inside the node that transactionId points to
-        if (transactionIdStr) {
+        // if the user didn't click on one of the buttons to close the custom popup window for invalid input
+        if (event.target.id !== domClassesIds.errorPopupOKbutton &&
+            event.target.id !== domClassesIds.errorPopupXbutton) {
 
-            // transform the string primitive into an object and call the split method
-            // return a list holding the trasaction type and the index of the trasaction in it's corresponding array
-            strList = transactionIdStr.split("-");
+            // this will coert to true or false if an id attribute exists inside the node that transactionId points to
+            if (transactionIdStr) {
 
-            // select the trasacton's type
-            transactionType = strList[0];
+                // transform the string primitive into an object and call the split method
+                // return a list holding the trasaction type and the index of the trasaction in it's corresponding array
+                strList = transactionIdStr.split("-");
 
-            // select the trasaction's id
-            transactionIdNumber = parseInt(strList[1]);
+                // select the trasacton's type
+                transactionType = strList[0];
 
-            if (!isNaN(transactionIdNumber))
-            {
-                // delete the trasaction from the appropiate transaction array
-                budgetCtrl.pblDeleteItem(transactionType, transactionIdNumber);
+                // select the trasaction's id
+                transactionIdNumber = parseInt(strList[1]);
 
-                // delete the transaction from the UI
-                uiController.pblDeleteListItem(transactionIdStr);
+                if (!isNaN(transactionIdNumber)) {
+                    // delete the trasaction from the appropiate transaction array
+                    budgetCtrl.pblDeleteItem(transactionType, transactionIdNumber);
 
-                // update and show the new budget, total income, total expenses, expense percentage out of income
-                prvUpdateBudget();
+                    // delete the transaction from the UI
+                    uiController.pblDeleteListItem(transactionIdStr);
+
+                    // update and show the new budget, total income, total expenses, expense percentage out of income
+                    prvUpdateBudget();
+
+                    // for each submited expense transaction calculate how much this expense representes out of the total income
+                    prvUpdatePercentageSubmitedExpenses();
+                }
+                else {
+                    console.error("The value of the id attribute of %O, doesn't containg a number." +
+                                "\nThe trasanction will not be removed from budgetController.prvData.allItems[%s]." +
+                                "\nThe transaction will not dissapear from the UI." +
+                                "\nThe financial situation overview panel from the UI will not change.", event.target.parentNode.parentNode.parentNode.parentNode,
+                                transactionType);
+                }
             }
-            else {
-                console.err("The value of the id attribute of %O, doesn't containg a number." +
-                            "\nThe trasanction will not be removed from budgetController.prvData.allItems[%s]." +
-                            "\nThe transaction will not dissapear from the UI." +
-                            "\nThe financial situation overview panel from the UI will not change.", event.target.parentNode.parentNode.parentNode.parentNode,
-                            transactionType);
-            }
-
-             // for each submited expense transaction calculate how much this expense representes out of the total income
-            prvUpdatePercentageSubmitedExpenses();
         }
     };
-
 
     return {
         initialiseVarsAndEvents: function() {
