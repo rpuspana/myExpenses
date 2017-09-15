@@ -33,9 +33,9 @@ var budgetController = (function() {
         }
     }
 
-    // getter for the prvExpense.percentageOfExpenseOutOfTotalIncome
+    // getter for the prvExpense.percentageOfExpenseOutOfTotalIncome property
     prvExpense.prototype.getPercentageOfSubmitedExpense = function() {
-        return this.calcPercentageOfSubmitedExpense();
+        return this.percentageOfExpenseOutOfTotalIncome();
     }
 
     // private Income constructor
@@ -188,6 +188,15 @@ var budgetController = (function() {
             prvData.allItems.exp.forEach(function(currentElem) {
                 currentElem.calculatePercentageOfExpenseOutOfTotalIncome();
             })
+        },
+
+        // create an array with each element being the percentage of a submited expense out of total income
+        pblGetPercentageOfExpenseOutOfTotalIncomeForEachExp: function() {
+            var arrayPercentageOfExpenseOutOfTotalIncome = prvData.allItems.exp.map(function(currentElement) {
+                return currentElement.getPercentageOfSubmitedExpense();
+            });
+
+            return listPercentageOfExpenseOutOfTotalIncome;
         },
 
         // return the budget, total of expenses, of income, and expense percentage
