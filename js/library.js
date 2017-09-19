@@ -101,16 +101,6 @@ var rpJSframework = (function() {
         return formatedNumerIntegerPart;
     };
 
-    // Round the n-th decimal and drop the ones at the right.By default the resulting number will have just two decimals
-    // number   Number  the floating point number to be rounded
-    // return   Number  a floating point number with N decimals or 2 by default
-    var prvCutNdecimalsFromFloatNum = function(number, lastDecimalPosition) {
-        var multiplier = Math.pow(10, lastDecimalPosition || 2)
-
-        // round up the second digit based on the third, Math.round(), and shrink the num to just two decimals
-        return Math.round(number * multiplier) / multiplier;
-    };
-
     // return the last two decimals of a number with at least two decimals.
     // If the number has just one decimal, return numDecimal0
     // If the number has no decimals, return "00"
@@ -150,6 +140,16 @@ var rpJSframework = (function() {
     };
 
     return {
+
+        // Round the n-th decimal and drop the ones at the right.By default the resulting number will have just two decimals
+        // number   Number  the floating point number to be rounded
+        // return   Number  a floating point number with N decimals or 2 by default
+        pblCutNdecimalsFromFloatNum: function(number, lastDecimalPosition) {
+            var multiplier = Math.pow(10, lastDecimalPosition || 2)
+
+            // round up the second digit based on the third, Math.round(), and shrink the num to just two decimals
+            return Math.round(number * multiplier) / multiplier;
+        },
 
         // Format a number using the system locale settings for the thousand and decimal separators
         // defaults to EN number format(thousand separator "," ; decimal separator "."), if the app can't get these separators.
