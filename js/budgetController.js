@@ -25,7 +25,11 @@ var budgetController = (function() {
     // totalIncome  Number  the total of the submited income transactions
     prvExpense.prototype.calculatePercentageOfExpenseOutOfTotalIncome = function() {
         if (prvData.totals.inc > 0) {
-            this.percentageOfExpenseOutOfTotalIncome = roundDecimal((this.value / prvData.totals.inc) * 100, 1);
+            var percentageOfExpTotalInc = (this.value / prvData.totals.inc) * 100;
+
+            // round up the second digit based on the third, and shrink the num to just two decimals
+            this.percentageOfExpenseOutOfTotalIncome = prvCutNdecimalsFromFloatNum(percentageOfExpTotalInc, 2);
+            console.log("percentageOfExpenseOutOfTotalIncome = " + this.percentageOfExpenseOutOfTotalIncome);
         }
         else {
             // when we delete all of the expense transactions, we need to reset this variable
@@ -43,6 +47,16 @@ var budgetController = (function() {
         this.id = id;
         this.description = description;
         this.value = value;
+    };
+
+    // Round the n-th decimal and drop the ones at the right.By default the resulting number will have just two decimals
+    // number   Number  the floating point number to be rounded
+    // return   Number  a floating point number with N decimals or 2 by default
+    var prvCutNdecimalsFromFloatNum = function(number, lastDecimalPosition) {
+        var multiplier = Math.pow(10, lastDecimalPosition || 2)
+
+        // round up the second digit based on the third, Math.round(), and shrink the num to just two decimals
+        return Math.round(number * multiplier) / multiplier;
     };
 
     // object for storing instances of prvExpense, prvIncome, totalExpenses, totalIncomes
@@ -178,8 +192,10 @@ var budgetController = (function() {
             if (prvData.totals.inc > 0){
 
                 // calculate the percent of how much the total expenses represent out of the total income.
-                // The result will have 1 decimal and it will be rounded.
-                prvData.expensesPercentageIncome = roundDecimal(((prvData.totals.exp * 100) / prvData.totals.inc), 1);
+                var percentTotalExpOutOfTotalInc =  (prvData.totals.exp * 100) / prvData.totals.inc;
+
+                // round up the second digit based on the third, and shrink the num to just two decimals
+                prvData.expensesPercentageIncome = prvCutNdecimalsFromFloatNum(percentTotalExpOutOfTotalInc, 2);
             }
             // else prvData.expensesPercentageIncome = -1
             else {
@@ -212,7 +228,7 @@ var budgetController = (function() {
                 budget: prvData.budget,
                 totalExpenses : prvData.totals.exp,
                 totalIncome : prvData.totals.inc,
-                expensesPercentIncome : prvData.expensesPercentageIncome
+                expensesPercentageIncome : prvData.expensesPercentageIncome
             };
         },
     }
