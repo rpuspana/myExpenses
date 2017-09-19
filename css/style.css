@@ -101,9 +101,8 @@ body {
 .budget__income__percentage,
 .budget__expenses__percentage {
     float: left;
-    width: 34px;
-    font-size: 11px;
-    padding: 3px 0;
+    font-size: 14px;
+    padding: 3px;
     margin-left: 10px;
 }
 
@@ -228,17 +227,17 @@ h2 {
 .item__value {
     float: left;
     transition: transform 0.3s;
+    font-weight: 800;
 }
 
 .item__percentage {
     float: left;
     margin-left: 20px;
     transition: transform 0.3s;
-    font-size: 11px;
+    font-size: 14px;
     background-color: #FFDAD9;
     padding: 3px;
     border-radius: 3px;
-    width: 32px;
     text-align: center;
 }
 
@@ -251,11 +250,13 @@ h2 {
     color: #FF5049;
 }
 
-.expenses .item__value,
-.expenses .item__percentage {
+.expenses .item__value {
     color: #FF5049;
 }
 
+.expenses .item__percentage {
+    color: #000;
+}
 
 .item__delete {
     float: left;
