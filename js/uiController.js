@@ -194,8 +194,8 @@ var uiController = (function() {
             var expensePercentTotalIncElem =  document.querySelector(prvDOMstrings.expPercentTotalInc);
 
             // if at least one income transaction was submited
-            if (budgetObj.expensesPercentIncome > 0) {
-                expensePercentTotalIncElem.textContent = budgetObj.expensesPercentIncome + "%";
+            if (budgetObj.expensesPercentageIncome > 0) {
+                expensePercentTotalIncElem.textContent = budgetObj.expensesPercentageIncome + "%";
             }
             // if there are no expsense transactions submited
             else {
