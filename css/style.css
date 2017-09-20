@@ -1,6 +1,5 @@
 /*
- * Developed by Radu Puspana
- * Date August 2017
+ * Developed by Jonas and Radu Puspana
  * Version 1.0
  */
 
@@ -298,7 +297,7 @@ h2 {
     position: absolute;
     width: 35%;
     top: 50%;
-    margin-left: 15%;
+    margin-left: 27%;
     font-size: 10pt;
     visibility: hidden;
 }
@@ -306,7 +305,7 @@ h2 {
 #alertBox_container {
     margin: 0;
     padding: 0;
-    height: 160%;
+    height: 165%;
     position: relative;
     color: #FAFAFA;
     border: 1px solid #FAFAFA;
@@ -331,7 +330,7 @@ h2 {
     position: relative;
     float: left;
     padding-left: 1%;
-    font-size: 13pt;
+    font-size: 9pt;
     margin-top: 2%;
 }
 
@@ -342,7 +341,7 @@ h2 {
     padding: 0.5% 2%;
     margin-right: 1%;
 
-    font-size: 11pt;
+    font-size: 9pt;
     font-weight: bold;
 
     color: #000;
@@ -371,24 +370,24 @@ h2 {
     margin-bottom: 0;
     padding: 2%;
     text-align: center;
-    font-size: 15pt;
+    font-size: 12pt;
 }
 
 #alertBox_text p {
     margin-top: -10px;
     margin-bottom: -10px;
-    font-size: 13pt;
+    font-size: 10pt;
     padding: 2%;
     text-align: left;
 }
 
 .button {
-    margin-top: 4%;
+    margin-top: 2%;
     margin-bottom: 4%;
     margin-left: 44%;
     color: #000;
-    font-size: 11pt;
-    height: 2%;
+    font-size: 10pt;
+    height: 1.5%;
     width: 14%;
     padding: 0.8%;
 
