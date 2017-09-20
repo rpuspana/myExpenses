@@ -240,4 +240,4 @@ var uiController = (function() {
     }
 })();
 
-console.log("UI controller has finished loading.");
+console.log("uiController.js has finished loading.");
