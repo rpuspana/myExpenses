@@ -91,7 +91,6 @@ var controller = (function(budgetCtrl, UIctrl) {
 
         // store this values in an array
         expensePercentageOutOfTotalIncomeArray = budgetController.pblGetPercentageOfExpenseOutOfTotalIncomeForEachExp()
-        console.log("expensePercentageOutOfTotalIncomeArray = " + expensePercentageOutOfTotalIncomeArray);
 
         // for each submited expense in the UI update the expense percentage
         uiController.pbldisplayPercentageOfExpenseOutOfTotalIncomeForAllExpenses(expensePercentageOutOfTotalIncomeArray);
@@ -123,7 +122,6 @@ var controller = (function(budgetCtrl, UIctrl) {
 
         // get the user input data from the UI. This input will be called a transcation
         userInput = uiController.pblGetInput();
-        console.log("userInput = %O", userInput);
 
         // input form validation for the description and value fields
 //        if (userInput.description.trim().length > 2 && !isNaN(userInput.value) && userInput.value > 0) {
@@ -151,7 +149,8 @@ var controller = (function(budgetCtrl, UIctrl) {
             prvUpdatePercentageSubmitedExpenses();
         }
         else {
-            console.log("Transaction input not valid. Display error popup")
+            console.log("Transaction input not valid. Display error popup");
+
             // select the popup node from in the DOM
             popupNode = document.getElementById(domNodeClassAndIdValues.popupMainDiv);
 
@@ -237,7 +236,6 @@ var controller = (function(budgetCtrl, UIctrl) {
 
     return {
         initialiseVarsAndEvents: function() {
-            console.log("controller has finished loading.");
             prvSetupEventListeners();
         }
     }
