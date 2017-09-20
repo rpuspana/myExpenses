@@ -1,6 +1,5 @@
 /*
  * Developed by Radu Puspana
- * Date August 2017
  * Version 1.0
  */
 
@@ -76,7 +75,7 @@ var controller = (function(budgetCtrl, UIctrl) {
         budgetIncExpExppercentage = budgetController.pblGetBudgetExpIncExpPercentage();
 
         // display the newly calculated budget on the UI
-        console.info(budgetIncExpExppercentage);
+        console.info("budgetIncExpExppercentage = " + budgetIncExpExppercentage);
         uiController.pblDisplayTransactionOverview(budgetIncExpExppercentage);
 
     };
@@ -92,9 +91,9 @@ var controller = (function(budgetCtrl, UIctrl) {
 
         // store this values in an array
         expensePercentageOutOfTotalIncomeArray = budgetController.pblGetPercentageOfExpenseOutOfTotalIncomeForEachExp()
+        console.log("expensePercentageOutOfTotalIncomeArray = " + expensePercentageOutOfTotalIncomeArray);
 
         // for each submited expense in the UI update the expense percentage
-        console.log(expensePercentageOutOfTotalIncomeArray);
         uiController.pbldisplayPercentageOfExpenseOutOfTotalIncomeForAllExpenses(expensePercentageOutOfTotalIncomeArray);
     };
 
@@ -177,6 +176,8 @@ var controller = (function(budgetCtrl, UIctrl) {
                     popupNode.style.visibility = "visible";
                 }
             }
+
+            document.getElementById(domNodeClassAndIdValues.errorPopupOKbutton).focus();
         }
     };
 
@@ -243,6 +244,7 @@ var controller = (function(budgetCtrl, UIctrl) {
 
 })(budgetController, uiController);
 
+console.log("controller.js has finished loading.");
 
 // start the app
 controller.initialiseVarsAndEvents();
