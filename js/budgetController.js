@@ -28,7 +28,7 @@ var budgetController = (function() {
             var percentageOfExpTotalInc = (this.value / prvData.totals.inc) * 100;
 
             // round up the second digit based on the third, and shrink the num to just two decimals
-            this.percentageOfExpenseOutOfTotalIncome = prvCutNdecimalsFromFloatNum(percentageOfExpTotalInc, 2);
+            this.percentageOfExpenseOutOfTotalIncome = rpJSframework.pblCutNdecimalsFromFloatNum(percentageOfExpTotalInc, 2);
             console.log("percentageOfExpenseOutOfTotalIncome = " + this.percentageOfExpenseOutOfTotalIncome);
         }
         else {
@@ -47,16 +47,6 @@ var budgetController = (function() {
         this.id = id;
         this.description = description;
         this.value = value;
-    };
-
-    // Round the n-th decimal and drop the ones at the right.By default the resulting number will have just two decimals
-    // number   Number  the floating point number to be rounded
-    // return   Number  a floating point number with N decimals or 2 by default
-    var prvCutNdecimalsFromFloatNum = function(number, lastDecimalPosition) {
-        var multiplier = Math.pow(10, lastDecimalPosition || 2)
-
-        // round up the second digit based on the third, Math.round(), and shrink the num to just two decimals
-        return Math.round(number * multiplier) / multiplier;
     };
 
     // object for storing instances of prvExpense, prvIncome, totalExpenses, totalIncomes
@@ -195,9 +185,8 @@ var budgetController = (function() {
                 var percentTotalExpOutOfTotalInc =  (prvData.totals.exp * 100) / prvData.totals.inc;
 
                 // round up the second digit based on the third, and shrink the num to just two decimals
-                prvData.expensesPercentageIncome = prvCutNdecimalsFromFloatNum(percentTotalExpOutOfTotalInc, 2);
+                prvData.expensesPercentageIncome = rpJSframework.pblCutNdecimalsFromFloatNum(percentTotalExpOutOfTotalInc, 2);
             }
-            // else prvData.expensesPercentageIncome = -1
             else {
                 prvData.expensesPercentageIncome =  -1;
             }
