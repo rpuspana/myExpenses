@@ -1,6 +1,5 @@
 /*
- * Developed by Radu Puspana
- * Date August 2017
+ * Developed by and copyright Radu Puspana
  * Version 1.0
  */
 
@@ -74,7 +73,7 @@ var uiController = (function() {
             // if the type of transaction is an expense
             else if (type === "exp") {
 
-                transactionListItem = '<div class="item clearfix" id="exp-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">---</div><div class="item__delete"><button class="item__delete__btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
+                transactionListItem = '<div class="item clearfix" id="exp-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">-</div><div class="item__delete"><button class="item__delete__btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
 
                 transListRootElemClass = prvDOMstrings.expenseContainer;
             }
@@ -82,7 +81,8 @@ var uiController = (function() {
             // replace the dummy text in transactionListItem with actual data from the transaction object
             newTransactionListItem = transactionListItem.replace("%id%", transcation.id);
             newTransactionListItem = newTransactionListItem.replace("%description%", utcTimeAndDate + transcation.description);
-            newTransactionListItem = newTransactionListItem.replace("%value%", transcation.value);
+            newTransactionListItem =
+                newTransactionListItem.replace("%value%",                                       rpJSframework.pblFormatNumberUsingSystemLocale(transcation.value));
 
             // select the transacton column father HTML element and insert the new transaction as it's first child
             // the newest transaction will be placed at the end of the income or expense column
@@ -109,12 +109,13 @@ var uiController = (function() {
             // index                  Number             index of the current DOM node in the expensePercentageNodes
             var displayExpensePercentage = function(expensePercentageNode, index) {
 
-                // if the expense percentage passed in as a parameter > 0
+                // if the expense percentage out of total income passed in as a parameter > 0
                 if (expensePercentageTotalIncomeArray[index] > 0) {
-                    expensePercentageNode.textContent = expensePercentageTotalIncomeArray[index] + "%";
+                    expensePercentageNode.textContent =
+                        rpJSframework.pblFormatNumberUsingSystemLocale(expensePercentageTotalIncomeArray[index]) + "%";
                 }
                 else {
-                    expensePercentageNode.textContent = "---";
+                    expensePercentageNode.textContent = "-";
                 }
             }
 
@@ -136,18 +137,13 @@ var uiController = (function() {
         // public method for deleting a submited transaction from the income or expense column based it's type
         // transId  string  id value of the 4-th ancestor of the event target DOM element
         pblDeleteListItem :function(transId) {
-
-            console.log("trans id = %s", transId);
-
             var deleteNode, fatherNode;
 
             // select the node to delete
             deleteNode = document.getElementById(transId);
-            console.log("deleteNode = %O", deleteNode);
 
             // select the father of the node to delete
             fatherNode = deleteNode.parentNode;
-            console.log("fatherNode = %O", fatherNode);
 
             // remove the node from the DOM tree
             console.info(fatherNode.removeChild(deleteNode));
@@ -182,13 +178,13 @@ var uiController = (function() {
         pblDisplayTransactionOverview: function(budgetObj) {
 
             // select the budget label on the UI
-            document.querySelector(prvDOMstrings.budgetLabel).textContent = budgetObj.budget;
+            document.querySelector(prvDOMstrings.budgetLabel).textContent = rpJSframework.pblFormatNumberUsingSystemLocale(budgetObj.budget);
 
-            // select the green background total income label on the UI
-            document.querySelector(prvDOMstrings.incomeLabel).textContent = budgetObj.totalIncome;
+            // select the green background total income label on the UI and display it with two decimals
+            document.querySelector(prvDOMstrings.incomeLabel).textContent =         rpJSframework.pblFormatNumberUsingSystemLocale(budgetObj.totalIncome);
 
             // select the red background total expenses label on the UI
-            document.querySelector(prvDOMstrings.expenseLabel).textContent = budgetObj.totalExpenses;
+            document.querySelector(prvDOMstrings.expenseLabel).textContent = rpJSframework.pblFormatNumberUsingSystemLocale(budgetObj.totalExpenses);
 
             // select the expenses percent label to the right of the total expenses label on the UI
             var expensePercentTotalIncElem =  document.querySelector(prvDOMstrings.expPercentTotalInc);
@@ -199,8 +195,8 @@ var uiController = (function() {
             }
             // if there are no expsense transactions submited
             else {
-                // replace 0% with "---" in the ".budget__expenses__percentage" <div>
-                expensePercentTotalIncElem.textContent = "---";
+                // add "-" in the ".budget__expenses__percentage" <div>
+                expensePercentTotalIncElem.textContent = "-";
             }
         },
 
