@@ -43,7 +43,7 @@ var rpJSframework = (function() {
 
     // get decimal separator from the user's system locale
     // return the user's system locale decimal separator
-    var prvGetDecimalSystemLocale = function(){
+    var prvGetSystemLocaleSettingDecimalChr = function(){
 
         // based on the fact tha it will return 0.8
         return (1 - 0.2).toString().charAt(1);
@@ -107,7 +107,7 @@ var rpJSframework = (function() {
     var prvReturnTheFirstTwoDecimalsOfNum = function(num) {
 
         var numToString = num.toString();
-        var systemLocaleDecimalChr = prvGetDecimalSystemLocale();
+        var systemLocaleDecimalChr = prvGetSystemLocaleSettingDecimalChr();
         var indexOfDecimalInNum = numToString.indexOf(systemLocaleDecimalChr);
         var inputNumDecimals;
 
@@ -141,6 +141,21 @@ var rpJSframework = (function() {
 
     return {
 
+        // count the number's decimals
+        // number  Number  the number on which we will count the decimals
+        // return the number's decimal count or 0 if the number doesn't have decimals;
+        pblNumberDecimalCount: function(number) {
+            var numberToStr = number.toString();
+            var numberDecimalChrIndex = numberToStr.indexOf(prvGetSystemLocaleSettingDecimalChr());
+
+            if (numberDecimalChrIndex !== -1) {
+                return (numberToStr.substring(numberDecimalChrIndex + 1, numberToStr.length).length);
+            }
+            else {
+                return 0;
+            }
+        },
+
         // Round the n-th decimal and drop the ones at the right.By default the resulting number will have just two decimals
         // number   Number  the floating point number to be rounded
         // return   Number  a floating point number with N decimals or 2 by default
@@ -164,7 +179,7 @@ var rpJSframework = (function() {
             firstTwoDecimalsOfNum = prvReturnTheFirstTwoDecimalsOfNum(num);
             console.log("firstTwoDecimalsOfNum = %s", firstTwoDecimalsOfNum);
 
-            formatedNumber = formatedNumberIntegerPart + prvGetDecimalSystemLocale() + firstTwoDecimalsOfNum;
+            formatedNumber = formatedNumberIntegerPart + prvGetSystemLocaleSettingDecimalChr() + firstTwoDecimalsOfNum;
             console.log("formatedNumber = %s", formatedNumber);
 
             console.log("Number formated using user's system locale thousand and decimal separator characters.");
