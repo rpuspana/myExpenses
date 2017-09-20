@@ -163,7 +163,7 @@ var rpJSframework = (function() {
             var multiplier = Math.pow(10, lastDecimalPosition || 2)
 
             // round up the second digit based on the third, Math.round(), and shrink the num to just two decimals
-            return Math.round(number * multiplier) / multiplier;
+            return (Math.round(number * multiplier) / multiplier);
         },
 
         // Format a number using the system locale settings for the thousand and decimal separators
@@ -174,18 +174,14 @@ var rpJSframework = (function() {
             var formatedNumberIntegerPart, firstTwoDecimalsOfNum, formatedNumber;
 
             formatedNumberIntegerPart = prvFormatNumIntegerPart(num);
-            console.log("formatedNumberIntegerPart = %s", formatedNumberIntegerPart);
 
             firstTwoDecimalsOfNum = prvReturnTheFirstTwoDecimalsOfNum(num);
-            console.log("firstTwoDecimalsOfNum = %s", firstTwoDecimalsOfNum);
 
             formatedNumber = formatedNumberIntegerPart + prvGetSystemLocaleSettingDecimalChr() + firstTwoDecimalsOfNum;
-            console.log("formatedNumber = %s", formatedNumber);
 
-            console.log("Number formated using user's system locale thousand and decimal separator characters.");
             return formatedNumber;
         }
     }
 })();
 
-console.log("Library has finished loading.");
+console.log("library.js has finished loading.");
