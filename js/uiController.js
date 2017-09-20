@@ -208,49 +208,37 @@ var uiController = (function() {
         // text    String  body text to be displayed in the popup
         // type    String  type of popup to be displayed
         // height  String  height of the modal window
-        pblDisplayPopup: function(text, type, height) {
+        pblConstructPopupAndRegisterItsEvents: function(text, type, height) {
 
-            var field = '<div><input id="ptext" class="field" type="text"></div>';
-            var button, popupColor;
+            var button, buttonId, popupColor, popupNode, popupContainerOpeningDivsStr, popupContainerClosingDivsStr;
+
+            popupContainerOpeningDivsStr = '<div id="alertBox"><div id="alertBox_container"><div id="alertBox_titlebar"><span>myExpenses</span><input id="alert_box_x_button" type="button" value="X"></div><div id="alertBox_text">';
+
+            popupContainerClosingDivsStr = '</div></div></div>';
 
             if (type === "err") {
                 button = '<div id="' + prvDOMstrings.popupButtonDiv + '"><input id="' +
                          prvDOMstrings.errorPopupOKbutton + '" class="button" type="button" value="OK" alt="OK"></div>';
 
-                document.getElementById(prvDOMstrings.popupTextAndButtonContainer).innerHTML = text + button;
-                popupColor = "#D32C34";
-                elemId = prvDOMstrings.errorPopupOKbutton;
+                popupColor = "#D1363A";
+                buttonId = prvDOMstrings.errorPopupOKbutton;
             }
-            else if (type === "info") {
-                // HTML of the button on the modal window
-                button = '<div id="alertBox_button_div"><input id="info_alert_box_OK_button" class="button" type="button" value="OK" alt="OK"></div>';
 
-                // insert the message and the OK button on the modal window
-                document.getElementById('alertBox_text').innerHTML = text + button;
+            popupNode = popupContainerOpeningDivsStr + text + button + popupContainerClosingDivsStr;
 
-                // set the background color of the modal window
-                popupColor = "green";
-
-                elemId = "ok_alert_box_button";
-
-            }
-            else if (type === "prompt") {
-                button = '<div id="alertBox_button_div"><input id="info_alert_box_OK_button" class="button" type="button" value="OK" alt="OK"></div>';
-                document.getElementById('alertBox_text').innerHTML = text + field + button;
-                popupColor = "green";
-            }
-            else {
-                document.getElementById('alertBox_text').innerHTML = text;
-                popupColor = "#D32C34";
-            }
+            document.querySelector(prvDOMstrings.transactionContainer).insertAdjacentHTML("beforeend", popupNode);
 
             if (height !== undefined) {document.getElementById(prvDOMstrings.popupMainDiv).style.height = height;}
             document.getElementById(prvDOMstrings.popupContainer).style.backgroundColor = popupColor;
-            document.getElementById(prvDOMstrings.popupContainer).style.visibility = "visible";
 
             // hide the custom popup when it's X button is clicked
-            document.getElementById(elemId).addEventListener("click", function () {
-                    document.getElementById(prvDOMstrings.popupContainer).style.visibility = "hidden";
+            document.getElementById(prvDOMstrings.errorPopupXbutton).addEventListener("click", function() {
+                    document.getElementById(prvDOMstrings.popupMainDiv).style.visibility = "hidden";
+            });
+
+            // hide the custom popup when it's OK button is clicked
+            document.getElementById(buttonId).addEventListener("click", function() {
+                    document.getElementById(prvDOMstrings.popupMainDiv).style.visibility = "hidden";
             });
         }
     }
