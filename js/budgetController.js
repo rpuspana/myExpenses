@@ -29,7 +29,7 @@ var budgetController = (function() {
 
             // round up the second digit based on the third, and shrink the num to just two decimals
             this.percentageOfExpenseOutOfTotalIncome = rpJSframework.pblCutNdecimalsFromFloatNum(percentageOfExpTotalInc, 2);
-            console.log("percentageOfExpenseOutOfTotalIncome = " + this.percentageOfExpenseOutOfTotalIncome);
+
         }
         else {
             // when we delete all of the expense transactions, we need to reset this variable
@@ -175,17 +175,16 @@ var budgetController = (function() {
 
             // calculate the budget: income - expenses
             prvData.budget = prvData.totals.inc - prvData.totals.exp;
-            console.log("budget = %d", prvData.budget);
 
             // if at least one income transaction was submited
-
             if (prvData.totals.inc > 0){
 
-                // calculate the percent of how much the total expenses represent out of the total income.
-                var percentTotalExpOutOfTotalInc =  (prvData.totals.exp * 100) / prvData.totals.inc;
+                // 1. calculate the percent of how much the total expenses represent out of the total income.
+                // 2. round up the second digit based on the third, and shrink the num to just two decimals
+                var percentTotalExpOutOfTotalInc =
+                    rpJSframework.pblCutNdecimalsFromFloatNum(((prvData.totals.exp * 100) / prvData.totals.inc), 2);
 
-                // round up the second digit based on the third, and shrink the num to just two decimals
-                prvData.expensesPercentageIncome = rpJSframework.pblCutNdecimalsFromFloatNum(percentTotalExpOutOfTotalInc, 2);
+                prvData.expensesPercentageIncome = percentTotalExpOutOfTotalInc;
             }
             else {
                 prvData.expensesPercentageIncome =  -1;
