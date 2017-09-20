@@ -221,4 +221,4 @@ var budgetController = (function() {
     }
 })();
 
-console.log("Budget controller has finished loading.");
+console.log("budgetController.js has finished loading.");
