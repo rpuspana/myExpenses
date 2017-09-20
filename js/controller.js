@@ -9,25 +9,24 @@
 var controller = (function(budgetCtrl, UIctrl) {
 
     // private function to place the event listeners and the HTML tags' classes
-    var prvSetupEventListeners = function() {
+    var prvSetupEventListeners = function(event) {
 
         // object containing the class names in the index.html and style.css
-        var DOMstrings = uiController.pblGetDOMstrings();
-
-         // register click event for the input validation popup's X button
-        document.getElementById(DOMstrings.errorPopupXbutton).addEventListener("click", function () {
-
-            // hide the modal window when it's X button is clicked
-            document.getElementById("alertBox_container").style.visibility = "hidden";
-        });
+        var nodeClassAndIdValues = uiController.pblGetDOMstrings();
 
         // add event listener for the .container div to catch the click event that bubbles up from the
         // .item__delete__btn <button> tag
-        document.querySelector(DOMstrings.transactionContainer).addEventListener("click", prvDeleteItem);
+        document.querySelector(nodeClassAndIdValues.transactionContainer).addEventListener("click", function(event) {
 
+            // if the user didn't click on one of the buttons to close the custom popup window for invalid input
+            if (event.target.id !== nodeClassAndIdValues.errorPopupOKbutton &&
+                event.target.id !== nodeClassAndIdValues.errorPopupXbutton) {
+                prvDeleteItem(event);
+            }
+        });
 
         // register click event for the button with the tick sign
-        document.querySelector(DOMstrings.inputButton).addEventListener("click", prvAddItem, false);
+        document.querySelector(nodeClassAndIdValues.inputButton).addEventListener("click", prvAddItem, false);
 
         // register Enter keypress event for the global object. Used only for the ENTER key
         document.getElementById("enterSum").addEventListener("keypress", function(event) {
@@ -99,22 +98,39 @@ var controller = (function(budgetCtrl, UIctrl) {
         uiController.pbldisplayPercentageOfExpenseOutOfTotalIncomeForAllExpenses(expensePercentageOutOfTotalIncomeArray);
     };
 
+    var prvIsSubmitedTransactonValid = function(userInput) {
+        if (
+            userInput.description.trim().length >= 3 &&
+            !isNaN(userInput.value) &&
+            userInput.value > 0 &&
+            rpJSframework.pblNumberDecimalCount(userInput.value) <= 2
+        ) {
+                return true;
+        }
+        else {
+            return false;
+        }
+    };
+
     // private function for receiving the user input from the UI,
     // entering the new transaction under the income or expense column on the UI, a
     // djusting the budget according to the user's transaction
     var prvAddItem = function() {
-        var userInput, newTransaction, localTimeAndDate;
+        var userInput, newTransaction, domNodeClassAndIdValues, localTimeAndDate;
 
-        console.log("You pressed enter and an item will be added to one of the tables and the budget will be updated");
+        domNodeClassAndIdValues = uiController.pblGetDOMstrings();
+
+        console.log("You pressed 'Enter'.The transaction is being validated...");
 
         // get the user input data from the UI. This input will be called a transcation
         userInput = uiController.pblGetInput();
         console.log("userInput = %O", userInput);
 
         // input form validation for the description and value fields
-        if (userInput.description.trim().length > 2 && !isNaN(userInput.value) && userInput.value > 0) {
+//        if (userInput.description.trim().length > 2 && !isNaN(userInput.value) && userInput.value > 0) {
+        if (prvIsSubmitedTransactonValid(userInput)) {
 
-            // add the transaction to the budget controller
+            // create an Expense or Income object and add the object to the appropiate array
             newTransaction = budgetController.pblAddItem(userInput.type, userInput.description, userInput.value);
             console.info("newTransaction = %O", newTransaction);
 
@@ -136,16 +152,31 @@ var controller = (function(budgetCtrl, UIctrl) {
             prvUpdatePercentageSubmitedExpenses();
         }
         else {
+            console.log("Transaction input not valid. Display error popup")
+            // select the popup node from in the DOM
+            popupNode = document.getElementById(domNodeClassAndIdValues.popupMainDiv);
 
-             // HTML to replace the content(if any) of the alertBox_text div
-            var modalWindowInnerHTML = "<p>The description should have at least three characters." +
-                " The value should have at least one digit, excluding  0, before submiting the transaction.</p>";
+            // if popupNode = null it means it was not added to the DOM
+            if (!popupNode) {
+                 // text of the popup to be displayed
+                var popupText =
+                    "<h3>Transaction invalid input error</h4>" +
+                    "<p>The following fields need input adjustment before submiting again:</p>" +
+                    "<p>Transaction description: A mandatory text of at least three characters long</p>" +
+                    "<p>Transaction value: A mandatory number greater than 0 with two decimals at most</p>";
 
-            // display custom modal window with this text, type and width
-            uiController.pblDisplayPopup(modalWindowInnerHTML, "err", "22%");
+                // display the popup and register button events
+                uiController.pblConstructPopupAndRegisterItsEvents(popupText, "err", "22%");
 
-            // make the modal window visible
-            document.getElementById("alertBox_container").style.visibility = "visible";
+                // make the popup visible
+                popupNode = document.getElementById(domNodeClassAndIdValues.popupMainDiv);
+                popupNode.style.visibility = "visible";
+            }
+            else {
+                if (popupNode.style.visibility === "hidden") {
+                    popupNode.style.visibility = "visible";
+                }
+            }
         }
     };
 
@@ -167,43 +198,38 @@ var controller = (function(budgetCtrl, UIctrl) {
         // in the income/expense columns
         transactionIdStr = event.target.parentNode.parentNode.parentNode.parentNode.id;
 
-        // if the user didn't click on one of the buttons to close the custom popup window for invalid input
-        if (event.target.id !== domClassesIds.errorPopupOKbutton &&
-            event.target.id !== domClassesIds.errorPopupXbutton) {
+        // this will coert to true or false if an id attribute exists inside the node that transactionId points to
+        if (transactionIdStr) {
 
-            // this will coert to true or false if an id attribute exists inside the node that transactionId points to
-            if (transactionIdStr) {
+            // transform the string primitive into an object and call the split method
+            // return a list holding the trasaction type and the index of the trasaction in it's corresponding array
+            strList = transactionIdStr.split("-");
 
-                // transform the string primitive into an object and call the split method
-                // return a list holding the trasaction type and the index of the trasaction in it's corresponding array
-                strList = transactionIdStr.split("-");
+            // select the trasacton's type
+            transactionType = strList[0];
 
-                // select the trasacton's type
-                transactionType = strList[0];
+            // select the trasaction's id
+            transactionIdNumber = parseInt(strList[1]);
 
-                // select the trasaction's id
-                transactionIdNumber = parseInt(strList[1]);
+            if (!isNaN(transactionIdNumber)) {
+                // delete the trasaction from the appropiate transaction array
+                budgetCtrl.pblDeleteItem(transactionType, transactionIdNumber);
 
-                if (!isNaN(transactionIdNumber)) {
-                    // delete the trasaction from the appropiate transaction array
-                    budgetCtrl.pblDeleteItem(transactionType, transactionIdNumber);
+                // delete the transaction from the UI
+                uiController.pblDeleteListItem(transactionIdStr);
 
-                    // delete the transaction from the UI
-                    uiController.pblDeleteListItem(transactionIdStr);
+                // update and show the new budget, total income, total expenses, expense percentage out of income
+                prvUpdateBudget();
 
-                    // update and show the new budget, total income, total expenses, expense percentage out of income
-                    prvUpdateBudget();
-
-                    // for each submited expense transaction calculate how much this expense representes out of the total income
-                    prvUpdatePercentageSubmitedExpenses();
-                }
-                else {
-                    console.error("The value of the id attribute of %O, doesn't containg a number." +
-                                "\nThe trasanction will not be removed from budgetController.prvData.allItems[%s]." +
-                                "\nThe transaction will not dissapear from the UI." +
-                                "\nThe financial situation overview panel from the UI will not change.", event.target.parentNode.parentNode.parentNode.parentNode,
-                                transactionType);
-                }
+                // for each submited expense transaction calculate how much this expense representes out of the total income
+                prvUpdatePercentageSubmitedExpenses();
+            }
+            else {
+                console.error("The value of the id attribute of %O, doesn't containg a number." +
+                            "\nThe trasanction will not be removed from budgetController.prvData.allItems[%s]." +
+                            "\nThe transaction will not dissapear from the UI." +
+                            "\nThe financial situation overview panel from the UI will not change.", event.target.parentNode.parentNode.parentNode.parentNode,
+                            transactionType);
             }
         }
     };
