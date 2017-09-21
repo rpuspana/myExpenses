@@ -188,7 +188,7 @@ var controller = (function(budgetCtrl, UIctrl) {
     // event   click event  an event that was fired up from below the .container div tag
     var prvDeleteItem = function(event) {
 
-        var itemClassDivOfEventTargetNode, strList, transactionType,
+        var itemClassDivAncestorOfEventTargetNode, strList, transactionType,
             transactionIdNumber, domClassesIds, regexIncExpIdValueDOM;
 
         // regex to match the income or expense transaction node's id value: inc-number or exp-number
@@ -198,20 +198,20 @@ var controller = (function(budgetCtrl, UIctrl) {
         domClassesIds = uiController.pblGetDOMstrings();
 
         // in Google Chrome the event.target node is <i class="ion-ios-close-outline"></i></button>
-        itemClassDivOfEventTargetNode = event.target.parentNode.parentNode.parentNode.parentNode;
+        itemClassDivAncestorOfEventTargetNode = event.target.parentNode.parentNode.parentNode.parentNode;
 
-        if (!regexIncExpIdValueDOM.test(itemClassDivOfEventTargetNode.id)) {
+        if (!regexIncExpIdValueDOM.test(itemClassDivAncestorOfEventTargetNode.id)) {
 
             // in Firefox, IE the event.target node is <button class="item__delete__btn">
-            itemClassDivOfEventTargetNode = event.target.parentNode.parentNode.parentNode;
+            itemClassDivAncestorOfEventTargetNode = event.target.parentNode.parentNode.parentNode;
         }
 
         // this will coert to true or false if an id attribute exists inside the node that transactionId points to
-        if (regexIncExpIdValueDOM.test(itemClassDivOfEventTargetNode.id)) {
+        if (regexIncExpIdValueDOM.test(itemClassDivAncestorOfEventTargetNode.id)) {
 
             // transform the string primitive into an object and call the split method
             // return a list holding the trasaction type and the index of the trasaction in it's corresponding array
-            strList = itemClassDivOfEventTargetNode.id.split("-");
+            strList = itemClassDivAncestorOfEventTargetNode.id.split("-");
 
             // select the trasacton's type
             transactionType = strList[0];
@@ -224,7 +224,7 @@ var controller = (function(budgetCtrl, UIctrl) {
                 budgetCtrl.pblDeleteItem(transactionType, transactionIdNumber);
 
                 // delete the transaction from the UI
-                uiController.pblDeleteListItem(itemClassDivOfEventTargetNode.id);
+                uiController.pblDeleteListItem(itemClassDivAncestorOfEventTargetNode.id);
 
                 // update and show the new budget, total income, total expenses, expense percentage out of income
                 prvUpdateBudget();
