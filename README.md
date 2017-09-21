@@ -28,8 +28,8 @@ A beautiful personal finance app to manage your monthly budget.
 #### Tested on
 
 * Windows 10 Pro 64 bit, Google Chrome Versions
-    61.0.3163.91  (Official Build) (64-bit)
-    60.0.3112.113 (Official Build) (64-bit)
+  * 61.0.3163.91  (Official Build) (64-bit)
+  * 60.0.3112.113 (Official Build) (64-bit)
 
 * Windows 10 Pro 64 bit, Mozilla Firefox 55.0.3 (64-bit)
 
