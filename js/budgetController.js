@@ -1,5 +1,6 @@
 /*
- * Developed by Radu Puspana
+ * Developed by and copyright Radu Puspana
+ * Developed in 2017
  * Version 1.0
  */
 
