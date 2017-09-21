@@ -19,6 +19,8 @@ var controller = (function(budgetCtrl, UIctrl) {
         // .item__delete__btn <button> tag
         document.querySelector(nodeClassAndIdValues.transactionContainer).addEventListener("click", function(event) {
 
+            console.log("s-a dat click pe .container")
+
             // if the user didn't click on one of the buttons to close the custom popup window for invalid input
             if (event.target.id !== nodeClassAndIdValues.errorPopupOKbutton &&
                 event.target.id !== nodeClassAndIdValues.errorPopupXbutton) {
@@ -186,26 +188,30 @@ var controller = (function(budgetCtrl, UIctrl) {
     // event   click event  an event that was fired up from below the .container div tag
     var prvDeleteItem = function(event) {
 
-        var transactionIdStr, strList, transactionType, transactionIdNumber, domClassesIds;
+        var itemClassDivOfEventTargetNode, strList, transactionType,
+            transactionIdNumber, domClassesIds, regexIncExpIdValueDOM;
 
-        console.info("event.target = %O", event.target);
-        console.info("event.target 4th parent = %O", event.target.parentNode.parentNode.parentNode.parentNode);
+        // regex to match the income or expense transaction node's id value: inc-number or exp-number
+        // matches inc-digit, inc-twoDigits, ..., inc-Ndigits, exp-digit, exp-twoDigits, ..., exp-Ndigits,
+        regexIncExpIdValueDOM = /^(inc-|exp-)\d+$/;
 
         domClassesIds = uiController.pblGetDOMstrings();
 
-        // return <div class="item clearfix" id="income-0">...</div> when
-        // the user clicks the .continer div and any of it's children
-        // The instr is safe to use because in uiController.pblAddListItem() we used a <div>
-        // structure that matches the instruction below to insert an income/expense trasaction
-        // in the income/expense columns
-        transactionIdStr = event.target.parentNode.parentNode.parentNode.parentNode.id;
+        // in Google Chrome the event.target node is <i class="ion-ios-close-outline"></i></button>
+        itemClassDivOfEventTargetNode = event.target.parentNode.parentNode.parentNode.parentNode;
+
+        if (!regexIncExpIdValueDOM.test(itemClassDivOfEventTargetNode.id)) {
+
+            // in Firefox, IE the event.target node is <button class="item__delete__btn">
+            itemClassDivOfEventTargetNode = event.target.parentNode.parentNode.parentNode;
+        }
 
         // this will coert to true or false if an id attribute exists inside the node that transactionId points to
-        if (transactionIdStr) {
+        if (regexIncExpIdValueDOM.test(itemClassDivOfEventTargetNode.id)) {
 
             // transform the string primitive into an object and call the split method
             // return a list holding the trasaction type and the index of the trasaction in it's corresponding array
-            strList = transactionIdStr.split("-");
+            strList = itemClassDivOfEventTargetNode.id.split("-");
 
             // select the trasacton's type
             transactionType = strList[0];
@@ -218,7 +224,7 @@ var controller = (function(budgetCtrl, UIctrl) {
                 budgetCtrl.pblDeleteItem(transactionType, transactionIdNumber);
 
                 // delete the transaction from the UI
-                uiController.pblDeleteListItem(transactionIdStr);
+                uiController.pblDeleteListItem(itemClassDivOfEventTargetNode.id);
 
                 // update and show the new budget, total income, total expenses, expense percentage out of income
                 prvUpdateBudget();
@@ -227,11 +233,13 @@ var controller = (function(budgetCtrl, UIctrl) {
                 prvUpdatePercentageSubmitedExpenses();
             }
             else {
-                console.error("The value of the id attribute of %O, doesn't containg a number." +
-                            "\nThe trasanction will not be removed from budgetController.prvData.allItems[%s]." +
-                            "\nThe transaction will not dissapear from the UI." +
-                            "\nThe financial situation overview panel from the UI will not change.", event.target.parentNode.parentNode.parentNode.parentNode,
-                            transactionType);
+                console.error("The value of the id attribute of %O, doesnt match the regex %s." +
+                              "\nThe trasanction will not be removed from budgetController.prvData.allItems[%s]." +
+                              "\nThe transaction will not dissapear from the UI." +
+                              "\nThe financial situation overview panel from the UI will not be updated.",
+                              event.target.parentNode.parentNode.parentNode.parentNode,
+                              regexIncExpIdValueDOM,
+                              transactionType);
             }
         }
     };
