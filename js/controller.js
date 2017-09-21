@@ -101,12 +101,22 @@ var controller = (function(budgetCtrl, UIctrl) {
     };
 
     var prvIsSubmitedTransactonValid = function(userInput) {
-        if (
-            userInput.description.trim().length >= 3 &&
-            !isNaN(userInput.value) &&
-            userInput.value > 0 &&
-            rpJSframework.pblNumberDecimalCount(userInput.value) <= 2
-        ) {
+
+        // get system locale decimal separator
+        var dummyNum = 1.1;
+        var decimalChr = dummyNum.toLocaleString().charAt(1);
+
+        // validate string representations of whole numbers and numbers with one or more decimals
+        // invalid 0  0D  00D  00..0D  1  1,D  1,DD  1. 1.D  1.DD 1.DD..D
+        var dummyStr = "^[1-9](\\d)*(\\@(\\d)+)?$";
+        var regexStr = dummyStr.replace("@", decimalChr);
+        var transactionValueRegex = new RegExp(regexStr);
+
+        // validate user input transaction description and value
+        if (userInput.description.trim().length >= 3 &&
+            transactionValueRegex.test(userInput.value) && // transaction value string contains only digits
+            !isNaN(parseFloat(userInput.value)) && // transasction value can be parsed to a float number
+            rpJSframework.pblNumberDecimalCount(userInput.value) <= 2) {
                 return true;
         }
         else {
@@ -132,7 +142,7 @@ var controller = (function(budgetCtrl, UIctrl) {
         if (prvIsSubmitedTransactonValid(userInput)) {
 
             // create an Expense or Income object and add the object to the appropiate array
-            newTransaction = budgetController.pblAddItem(userInput.type, userInput.description, userInput.value);
+            newTransaction = budgetController.pblAddItem(userInput.type, userInput.description, parseFloat(userInput.value));
             console.info("newTransaction = %O", newTransaction);
 
             // TO BE REMOVED. Inspect the prvData structure
