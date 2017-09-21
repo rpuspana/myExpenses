@@ -11,7 +11,7 @@ A beautiful personal finance app to manage your monthly budget.
 ### App features
 
 1. HTML/CSS code respects the W3C standard
-2. JavaScript code respects teh ES6 standard
+2. JavaScript code respects the ES6 standard
 3. JavaSript code works on desktop and mobile browsers
 4. User input validation
 5. User experience design
