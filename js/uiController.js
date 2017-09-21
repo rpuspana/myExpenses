@@ -42,8 +42,8 @@ var uiController = (function() {
                 // return the transaction description as string
                 description: document.querySelector(prvDOMstrings.inputDescription).value,
 
-                // return the transaction value as a floating point number
-                value: parseFloat(document.querySelector(prvDOMstrings.inputValue).value)
+                // return the transaction value as a string
+                value: document.querySelector(prvDOMstrings.inputValue).value
             };
         },
 
@@ -192,13 +192,22 @@ var uiController = (function() {
 
             // if at least one income transaction was submited
             if (budgetObj.expensesPercentageIncome > 0) {
-                expensePercentTotalIncElem.textContent = budgetObj.expensesPercentageIncome + "%";
+                expensePercentTotalIncElem.textContent =
+                    rpJSframework.pblFormatNumberUsingSystemLocale(budgetObj.expensesPercentageIncome) + "%";
             }
             // if there are no expsense transactions submited
             else {
                 // add "-" in the ".budget__expenses__percentage" <div>
                 expensePercentTotalIncElem.textContent = "-";
             }
+
+            // get the with in px of expensePercentTotalIncElem
+            expensePercentTotalIncElemWidth = expensePercentTotalIncElem.scrollWidth;
+            console.info("expensePercentTotalIncElemWidth = %d", expensePercentTotalIncElem.scrollWidth);
+
+            // resize the budget__income__percentage to the width of expensePercentTotalIncElemWidth,
+            // so that the total income and total expense sums are right under each other
+            document.querySelector(".budget__income__percentage").style.width = expensePercentTotalIncElemWidth + "px";
         },
 
         // create and display a custom popup window
