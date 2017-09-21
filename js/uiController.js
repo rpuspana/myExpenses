@@ -67,14 +67,14 @@ var uiController = (function() {
                 // - transaction's HTML id (income-%id%),
                 // - the transaction description (%description%),
                 // - transaction's value(%value%)
-                transactionListItem = '<div class="item clearfix" id="inc-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete__btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
+                transactionListItem = '<div class="item clearfix" id="inc-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete__btn"><i class="ion-ios-close"></i></button></div></div></div>';
 
                 transListRootElemClass = prvDOMstrings.incomeContainer;
             }
             // if the type of transaction is an expense
             else if (type === "exp") {
 
-                transactionListItem = '<div class="item clearfix" id="exp-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">-</div><div class="item__delete"><button class="item__delete__btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
+                transactionListItem = '<div class="item clearfix" id="exp-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">-</div><div class="item__delete"><button class="item__delete__btn"><i class="ion-ios-close"></i></button></div></div></div>';
 
                 transListRootElemClass = prvDOMstrings.expenseContainer;
             }
