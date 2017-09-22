@@ -39,30 +39,14 @@ var controller = (function(budgetCtrl, UIctrl) {
             if (event.key === "Enter" || event.which === 13) { prvAddItem(); }
 
         }, false);
+
+        // get the local time and date
+        var dateObj = rpJSframework.pblGetLocalTimeAndDate();
+
+        // insert the current month name and year above the budget sum in the UI
+        document.querySelector(nodeClassAndIdValues.dateLabel).textContent = dateObj.currentMonthName + " " + dateObj.currentYear;
+
     };
-
-    // get tine and date of the local time to record the creation of a transaction
-    // return dateAndTime String time and date formated as YYYY-MM-DD HH:MM:SS local time
-    // return String HH:MM  DD-MM-YYYY local time
-    var prvGetLocalTimeAndDate = function() {
-        var date = new Date;
-
-        var hour = date.getHours();
-        var minutes = date.getMinutes();
-        if (minutes < 10) {
-            minutes = '0' + minutes;
-        }
-        var seconds = date.getSeconds();
-
-        var year = date.getFullYear();
-        var month = date.getMonth() + 1;
-        var day = date.getDate();
-
-        var dateAndTime = "" + hour + ":" + minutes + ":" + seconds +
-                          "  "  + day + "-" + month + "-" + year + "  ";
-
-        return dateAndTime;
-    }
 
     // calculate the budget based on the last submited or selected transaction and display it on the UI
     var prvUpdateBudget = function() {
@@ -148,10 +132,8 @@ var controller = (function(budgetCtrl, UIctrl) {
             // TO BE REMOVED. Inspect the prvData structure
             budgetController.pblTestGetDataStr();
 
-            localTimeAndDate = prvGetLocalTimeAndDate();
-
             // add the transaction to the UI in the Income or Expense comumn depending on the transaction's type
-            uiController.pblAddListItem(newTransaction, userInput.type, localTimeAndDate);
+            uiController.pblAddListItem(newTransaction, userInput.type);
 
             // after transaction submit, clear the transaction's details from the transaction input form
             uiController.pblClearTransFormFields();
