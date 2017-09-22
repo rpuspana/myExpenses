@@ -201,13 +201,13 @@ var uiController = (function() {
                 expensePercentTotalIncElem.textContent = "-";
             }
 
-            // get the with in px of expensePercentTotalIncElem
-            expensePercentTotalIncElemWidth = expensePercentTotalIncElem.scrollWidth;
-            console.info("expensePercentTotalIncElemWidth = %d", expensePercentTotalIncElem.scrollWidth);
-
-            // resize the budget__income__percentage to the width of expensePercentTotalIncElemWidth,
-            // so that the total income and total expense sums are right under each other
-            document.querySelector(".budget__income__percentage").style.width = expensePercentTotalIncElemWidth + "px";
+//            // get the with in px of expensePercentTotalIncElem
+//            expensePercentTotalIncElemWidth = expensePercentTotalIncElem.scrollWidth;
+//            console.info("expensePercentTotalIncElemWidth = %d", expensePercentTotalIncElem.scrollWidth);
+//
+//            // resize the budget__income__percentage to the width of expensePercentTotalIncElemWidth,
+//            // so that the total income and total expense sums are right under each other
+//            document.querySelector(".budget__income__percentage").style.width = expensePercentTotalIncElemWidth + "px";
         },
 
         // create and display a custom popup window
