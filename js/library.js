@@ -166,7 +166,7 @@ var rpJSframework = (function() {
                               "  "  + day + "-" + (monthNumber + 1)+ "-" + year + "  ";
 
             return {
-                timeDateCUstomFormat: str,
+                timeDateCustomFormat: str,
                 currentMonthName: monthsName[monthNumber],
                 yearNumber: year
             };
