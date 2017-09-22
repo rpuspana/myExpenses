@@ -142,6 +142,36 @@ var rpJSframework = (function() {
 
     return {
 
+        // get tine and date of the local time to record the creation of a transaction
+        // return dateAndTime String time and date formated as YYYY-MM-DD HH:MM:SS local time
+        // return String HH:MM  DD-MM-YYYY local time
+        pblGetLocalTimeAndDate: function() {
+
+            var date = new Date();
+
+            var hour = date.getHours();
+            var minutes = date.getMinutes();
+            if (minutes < 10) {
+                minutes = '0' + minutes;
+            }
+            var seconds = date.getSeconds();
+
+            var year = date.getFullYear();
+            var monthNumber = date.getMonth();
+            var monthsName = ["January", "February", "March", "April", "May", "June",
+                             "July", "August", "September", "October", "November", "December"]
+            var day = date.getDate();
+
+            var str = "" + hour + ":" + minutes + ":" + seconds +
+                              "  "  + day + "-" + (monthNumber + 1)+ "-" + year + "  ";
+
+            return {
+                timeDateCUstomFormat: str,
+                currentMonthName: monthsName[monthNumber],
+                yearNumber: year
+            };
+        },
+
         // count the number's decimals
         // number  Number  the number on which we will count the decimals
         // return the number's decimal count or 0 if the number doesn't have decimals;
