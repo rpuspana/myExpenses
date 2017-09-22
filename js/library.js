@@ -168,7 +168,7 @@ var rpJSframework = (function() {
             return {
                 timeDateCustomFormat: str,
                 currentMonthName: monthsName[monthNumber],
-                yearNumber: year
+                currentYear: year
             };
         },
 
