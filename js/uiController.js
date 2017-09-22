@@ -10,6 +10,7 @@ var uiController = (function() {
 
     // private object containing the class names used in index.html and style.css
     var prvDOMstrings = {
+        dateLabel: ".budget__title__month__year",
         inputType: ".add__type",
         inputDescription: ".add__description",
         inputValue: ".add__value",
@@ -50,7 +51,7 @@ var uiController = (function() {
         // public method for listing a transaction entered by the user as input, under the Expense or Income column
         // transcation  Expense/Income instance  trasaction entered by the user
         // type  String  type of transaction: income/expense
-        pblAddListItem: function(transcation, type, utcTimeAndDate) {
+        pblAddListItem: function(transcation, type) {
 
             // html code of a transaction list item to be added with dummy code for the transaction's HTML id, description and value
             var transactionListItem;
@@ -79,9 +80,13 @@ var uiController = (function() {
                 transListRootElemClass = prvDOMstrings.expenseContainer;
             }
 
+            // get the time and date
+            var timeDateObj = rpJSframework.pblGetLocalTimeAndDate();
+
             // replace the dummy text in transactionListItem with actual data from the transaction object
             newTransactionListItem = transactionListItem.replace("%id%", transcation.id);
-            newTransactionListItem = newTransactionListItem.replace("%description%", utcTimeAndDate + transcation.description);
+            newTransactionListItem = newTransactionListItem.replace("%description%",
+                                                                    timeDateObj.timeDateCustomFormat + transcation.description);
             newTransactionListItem =
                 newTransactionListItem.replace("%value%",                                       rpJSframework.pblFormatNumberUsingSystemLocale(transcation.value));
 
