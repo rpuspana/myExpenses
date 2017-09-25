@@ -192,7 +192,7 @@ var uiController = (function() {
 
             // add a red border color to th last two input fields and ared color to the submit button
             // when the transaction type is changed to expense and remove them when the selection is changed to income
-            rpJSframework.nodeListForEach(fields, function(currentElem, currentElemIndex) {
+            rpJSframework.pblNodeListForEach(fields, function(currentElem, currentElemIndex) {
                 currentElem.classList.toggle(prvDOMstrings.expenseTransInputFieldsColor);
             });
 
