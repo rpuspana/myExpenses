@@ -142,6 +142,14 @@ var rpJSframework = (function() {
 
     return {
 
+        // function to loop through a NodeList because NodeList.prototype.forEach() is not supported in IE
+        pblNodeListForEach: function(list, callback) {
+            for (var i = 0; i < list.length; i++) {
+                callback(list[i], i);
+            }
+        },
+
+
         // get tine and date of the local time to record the creation of a transaction
         // return dateAndTime String time and date formated as YYYY-MM-DD HH:MM:SS local time
         // return String HH:MM  DD-MM-YYYY local time
