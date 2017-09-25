@@ -179,6 +179,12 @@ var uiController = (function() {
             transFormDescAndValueFieldsArray[0].focus();
         },
 
+        // when the user changes the transaction type, all the user input fields and the submit button
+        // will be colored in a color associated to that type: green for an income transaction, orange for an expense
+        pblColorCodeTransInputFields: function() {
+
+        },
+
         // display on the UI the total income, the total expenses, the budget and
         // how much of the total income the expenses represent in percentages
         pblDisplayTransactionOverview: function(budgetObj) {
