@@ -28,9 +28,10 @@ body {
     font-weight: 400;
 }
 
+/* color user input elements and submit button when user selects a transaction type */
 .right { float: right; }
-.red { color: #FF5049 !important; }
-.red-focus:focus { border: 1px solid #FF5049 !important; }
+.button-color-select-trans-type { color: #F63700 !important; }
+.input-fields-color-select-trans-type:focus { border: 1px solid #F63700 !important; }
 
 /**********************************************
 *** TOP PART
