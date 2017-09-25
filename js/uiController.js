@@ -14,7 +14,9 @@ var uiController = (function() {
         inputType: ".add__type",
         inputDescription: ".add__description",
         inputValue: ".add__value",
+        expenseTransInputFieldsColor: "input-fields-color-select-trans-type",
         inputButton: ".add__btn",
+        expenseTransSubmitBtnColor: "button-color-select-trans-type",
         incomeContainer: ".income__list",
         expenseContainer: ".expenses__list",
         budgetLabel: ".budget__value",
@@ -182,6 +184,20 @@ var uiController = (function() {
         // when the user changes the transaction type, all the user input fields and the submit button
         // will be colored in a color associated to that type: green for an income transaction, orange for an expense
         pblColorCodeTransInputFields: function() {
+            var fields = document.querySelectorAll(
+                            prvDOMstrings.inputType + "," +
+                            prvDOMstrings.inputDescription + "," +
+                            prvDOMstrings.inputValue
+            );
+
+            // add a red border color to th last two input fields and ared color to the submit button
+            // when the transaction type is changed to expense and remove them when the selection is changed to income
+            rpJSframework.nodeListForEach(fields, function(currentElem, currentElemIndex) {
+                currentElem.classList.toggle(prvDOMstrings.expenseTransInputFieldsColor);
+            });
+
+            document.querySelector(prvDOMstrings.inputButton).classList.toggle(prvDOMstrings.expenseTransSubmitBtnColor);
+
 
         },
 
