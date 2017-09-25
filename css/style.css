@@ -28,10 +28,13 @@ body {
     font-weight: 400;
 }
 
-/* color user input elements and submit button when user selects a transaction type */
+
 .right { float: right; }
-.button-color-select-trans-type { color: #F63700 !important; }
-.input-fields-color-select-trans-type:focus { border: 1px solid #F63700 !important; }
+
+/* color user input elements and submit button when user selects a transaction type */
+.input-fields-color-select-trans-type:focus { border: 1px solid #FF5049 !important; }
+.button-color-select-trans-type { color: #FF5049 !important; }
+
 
 /**********************************************
 *** TOP PART
@@ -162,7 +165,7 @@ body {
     font-size: 35px;
     background: none;
     border: none;
-    color: #8e8d8d;
+    color: #017906 ;
     cursor: pointer;
     display: inline-block;
     vertical-align: middle;
@@ -176,7 +179,7 @@ body {
 .add__description:focus,
 .add__value:focus {
     outline: none;
-    border: 1px solid #28B9B5;
+    border: 1px solid #017906;
 }
 
 .add__btn:focus { outline: none; }
