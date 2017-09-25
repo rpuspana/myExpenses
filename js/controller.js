@@ -46,6 +46,11 @@ var controller = (function(budgetCtrl, UIctrl) {
         // insert the current month name and year above the budget sum in the UI
         document.querySelector(nodeClassAndIdValues.dateLabel).textContent = dateObj.currentMonthName + " " + dateObj.currentYear;
 
+        // set up a chnage event listener on the dropdown list so that when a user changes the transaction type,
+        // all the user input fields and the submit button will be colored in a color associated to that type
+        // green for an income transaction, orange for an expense one
+        document.querySelector(nodeClassAndIdValues.inputType).addEventListener("change", uiController.pblColorCodeTransInputFields);
+
     };
 
     // calculate the budget based on the last submited or selected transaction and display it on the UI
