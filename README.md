@@ -6,7 +6,7 @@ A beautiful personal finance app to manage your monthly budget.
 
 1. HTML 5
 2. CSS 3
-3. JavaScript ES6 (ES2015)
+3. JavaScript ES5
 
 ### App features
 
